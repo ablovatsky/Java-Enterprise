@@ -14,16 +14,19 @@ import java.util.List;
 @Repository("profileDao")
 public class ProfileDaoImpl extends AbstractDao<Integer, Profile> implements ProfileDao {
 
+	@Override
 	public Profile findById(int id) {
-		return getByKey(id);
+		return getById(id);
 	}
 
+	@Override
 	public Profile findByType(String type) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("type", type));
 		return (Profile) criteria.uniqueResult();
 	}
-	
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Profile> findAll(){
 		Criteria criteria = createEntityCriteria();

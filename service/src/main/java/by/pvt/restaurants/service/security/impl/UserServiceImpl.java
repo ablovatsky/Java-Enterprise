@@ -1,7 +1,6 @@
 package by.pvt.restaurants.service.security.impl;
 
 import by.pvt.restaurants.dao.security.UserDao;
-import by.pvt.restaurants.dao.security.impl.UserDaoImpl;
 import by.pvt.restaurants.model.User;
 import by.pvt.restaurants.service.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +20,30 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
     private PasswordEncoder passwordEncoder;
-	
+
+    @Override
 	public User findById(int id) {
 		return dao.findById(id);
 	}
 
+    @Override
 	public User findBySSO(String sso) {
 		return dao.findBySSO(sso);
 	}
 
+    @Override
 	public void saveUser(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		dao.save(user);
+		dao.addUser(user);
 	}
 
+    @Override
 	public void updateUser(User user) {
-		User entity = dao.findById(user.getId());
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            dao.updateUser(user);
+        }
+		/*User entity = dao.findById(user.getId());
 		if(entity!=null){
 			entity.setSsoId(user.getSsoId());
 			if(!user.getPassword().equals(entity.getPassword())){
@@ -46,22 +53,24 @@ public class UserServiceImpl implements UserService {
 			entity.setLastName(user.getLastName());
 			entity.setEmail(user.getEmail());
 			entity.setUserProfiles(user.getUserProfiles());
-		}
+		}*/
+
 	}
 
-	
+    @Override
 	public void deleteUserBySSO(String sso) {
 		dao.deleteBySSO(sso);
 	}
 
+    @Override
 	public List<User> findAllUsers() {
-		List<User> userList = dao.findAllUsers();
-		return userList;
+		return dao.findAllUsers();
 	}
 
-	public boolean isUserSSOUnique(Integer id, String sso) {
+    @Override
+	public boolean isUserSSOUnique(String sso) {
 		User user = findBySSO(sso);
-		return ( user == null || ((id != null) && (user.getId() == id)));
+		return  user == null;
 	}
 	
 }

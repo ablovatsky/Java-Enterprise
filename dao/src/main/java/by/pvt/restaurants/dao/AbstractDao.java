@@ -11,34 +11,33 @@ import java.lang.reflect.ParameterizedType;
 public abstract class AbstractDao<PK extends Serializable, T> {
 	
 	private final Class<T> persistentClass;
+
+    @Autowired
+    private	SessionFactory sessionFactory;
 	
 	@SuppressWarnings("unchecked")
 	public AbstractDao(){
-		this.persistentClass =(Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+		this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 	}
-	
-	@Autowired
-	private
-	SessionFactory sessionFactory;
 
-	protected Session getSession(){
+	private Session getSession(){
 		return sessionFactory.getCurrentSession();
 	}
 
 	@SuppressWarnings("unchecked")
-	public T getByKey(PK key) {
+	protected T getById(PK key) {
 		return (T) getSession().get(persistentClass, key);
 	}
 
-	public void persist(T entity) {
+	protected void persist(T entity) {
 		getSession().persist(entity);
 	}
 
-	public void update(T entity) {
+	protected void update(T entity) {
 		getSession().update(entity);
 	}
 
-	public void delete(T entity) {
+	protected void delete(T entity) {
 		getSession().delete(entity);
 	}
 	

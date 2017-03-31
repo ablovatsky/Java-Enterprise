@@ -22,7 +22,7 @@ import java.util.List;
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService{
 
-	static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 	
 	@Autowired
 	private UserService userService;
@@ -38,7 +38,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 			return new org.springframework.security.core.userdetails.User(user.getSsoId(), user.getPassword(), 
 				 true, true, true, true, getGrantedAuthorities(user));
 	}
-
 	
 	private List<GrantedAuthority> getGrantedAuthorities(User user){
 		List<GrantedAuthority> authorities = new ArrayList<>();

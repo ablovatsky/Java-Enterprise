@@ -64,7 +64,7 @@ public class HibernateTokenRepositoryImpl extends AbstractDao<String, Persistent
 	@Override
 	public void updateToken(String seriesId, String tokenValue, Date lastUsed) {
 		logger.info("Updating Token for seriesId : {}", seriesId);
-		PersistentLogin persistentLogin = getByKey(seriesId);
+		PersistentLogin persistentLogin = getById(seriesId);
 		persistentLogin.setToken(tokenValue);
 		persistentLogin.setLast_used(lastUsed);
 		update(persistentLogin);

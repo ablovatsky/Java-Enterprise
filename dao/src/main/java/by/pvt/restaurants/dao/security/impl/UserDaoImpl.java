@@ -18,15 +18,17 @@ import java.util.List;
 public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
-	
+
+	@Override
 	public User findById(int id) {
-		User user = getByKey(id);
+		User user = getById(id);
 		if(user!=null){
 			Hibernate.initialize(user.getUserProfiles());
 		}
 		return user;
 	}
 
+	@Override
 	public User findBySSO(String sso) {
 		logger.info("SSO : {}", sso);
 		Criteria criteria = createEntityCriteria();
@@ -38,22 +40,29 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		return user;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<User> findAllUsers() {
 		Criteria criteria = createEntityCriteria().addOrder(Order.asc("firstName"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		/*
 		List<User> users = (List<User>) criteria.list();
 		for(User user : users){
 			Hibernate.initialize(user.getUserProfiles());
-		}*/
+		}
 		return (List<User>) criteria.list();
 	}
 
-	public void save(User user) {
-		persist(user);
+	@Override
+	public void addUser(User user) {
+		this.persist(user);
 	}
 
+    @Override
+    public void updateUser(User user) {
+        update(user);
+    }
+
+    @Override
 	public void deleteBySSO(String sso) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("ssoId", sso));

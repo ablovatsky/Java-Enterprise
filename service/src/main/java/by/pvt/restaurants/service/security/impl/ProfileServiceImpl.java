@@ -16,15 +16,18 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
 	private ProfileDao dao;
-	
+
+	@Override
 	public Profile findById(int id) {
 		return dao.findById(id);
 	}
 
+	@Override
 	public Profile findByType(String type){
 		return dao.findByType(type);
 	}
 
+	@Override
 	public List<Profile> findAll() {
 		return dao.findAll();
 	}
