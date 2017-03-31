@@ -1,0 +1,78 @@
+html{
+	background-color:#2F2F2F;
+}
+
+body{
+	height: 100%;
+	background-color:rgb(245, 245, 245);
+	padding-top: 30px;
+}
+
+
+#mainWrapper {
+	height: 100%;
+}
+
+.floatRight{
+	float:right;
+	margin-right: 18px;
+}
+
+.has-error{
+	color:red;
+}
+
+.generic-container {
+    position:relative;
+    min-width: 850px;
+    width:80%;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 30px black;
+    margin: auto;
+}
+
+.custom-width {
+    width: 80px !important;
+}
+
+body, #mainWrapper, .form-control{
+	font-size:12px!important;
+}
+
+#mainWrapper {
+	height: 100vh;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:10px;
+}
+
+.login-container {
+    width: 40%;
+    max-width: 500px;
+    margin: 100px auto auto;
+    position: relative;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 0 30px black;
+}
+
+.a-registration {
+    text-align: center;
+}
+
+.login-card {
+    width: 80%;
+    margin: auto;
+}
+
+.login-form {
+    padding: 10%;
+}
+
+.authbar{
+	margin-bottom:15px;
+}
