@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="row@localhost" uuid="01136426-7550-4c07-a023-61c2c3dace6b">
+    <data-source source="LOCAL" name="avectis@localhost" uuid="c0ef3b24-c5f7-4f7a-979a-d645203d60c7">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/row</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/avectis</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

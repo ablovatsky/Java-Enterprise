@@ -1,30 +1,42 @@
-/*All User's gets stored in APP_USER table*/
-create table USER (
-   id BIGINT NOT NULL AUTO_INCREMENT,
-   sso_id VARCHAR(30) NOT NULL,
-   password VARCHAR(100) NOT NULL,
-   first_name VARCHAR(30) NOT NULL,
-   last_name  VARCHAR(30) NOT NULL,
-   email VARCHAR(30) NOT NULL,
-   PRIMARY KEY (id),
-   UNIQUE (sso_id)
+/*SUBDIVISION table*/
+CREATE TABLE SUBDIVISION (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (name)
+);
+
+/*WORKER table*/
+create table WORKER (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  sso_id VARCHAR(30) NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  first_name VARCHAR(30) NOT NULL,
+  last_name  VARCHAR(30) NOT NULL,
+  patronymic VARCHAR(30) NOT NULL,
+  email VARCHAR(30) NOT NULL,
+  subdivision BIGINT NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (sso_id),
+  FOREIGN KEY (subdivision) REFERENCES SUBDIVISION (id)
+
 );
    
-/* USER_PROFILE table contains all possible roles */ 
+/* WORKER_PROFILE table contains all possible roles */
 create table PROFILE(
-   id BIGINT NOT NULL AUTO_INCREMENT,
-   type VARCHAR(30) NOT NULL,
-   PRIMARY KEY (id),
-   UNIQUE (type)
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  type VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (type)
 );
    
 /* JOIN TABLE for MANY-TO-MANY relationship*/  
-CREATE TABLE USER_TO_PROFILE (
-    user_id BIGINT NOT NULL,
-    user_profile_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, user_profile_id),
-    CONSTRAINT FK_USER FOREIGN KEY (user_id) REFERENCES USER (id),
-    CONSTRAINT FK_PROFILE FOREIGN KEY (user_profile_id) REFERENCES PROFILE (id)
+CREATE TABLE WORKER_TO_PROFILE (
+  worker_id BIGINT NOT NULL,
+  worker_profile_id BIGINT NOT NULL,
+  PRIMARY KEY (worker_id, worker_profile_id),
+  CONSTRAINT FK_USER FOREIGN KEY (worker_id) REFERENCES WORKER (id),
+  CONSTRAINT FK_PROFILE FOREIGN KEY (worker_profile_id) REFERENCES PROFILE (id)
 );
   
 /* Populate USER_PROFILE Table */
@@ -38,21 +50,23 @@ INSERT INTO PROFILE(type)
 VALUES ('DBA');
   
   
-/* Populate one Admin User which will further create other users for the application using GUI */
-INSERT INTO USER(sso_id, password, first_name, last_name, email)
-VALUES ('admin','$2a$04$psdZWu3EpehkjnL0cERrhOFE8EtBIUh4apzAXVSv4j9EoA3HKENcS', 'Admin','Admin','admin@admin.com');
-  
-  
+INSERT INTO SUBDIVISION(name)
+VALUES ('ОРПО');
+
+INSERT INTO WORKER(sso_id, password, first_name, last_name, patronymic, email, subdivision)
+VALUES ('admin','$2a$04$psdZWu3EpehkjnL0cERrhOFE8EtBIUh4apzAXVSv4j9EoA3HKENcS', 'Admin','Admin','admin','admin@admin.com', (SELECT id FROM subdivision WHERE name LIKE 'ОРПО'));
+
+
 /* Populate JOIN Table */
-INSERT INTO USER_TO_PROFILE (user_id, user_profile_id)
-  SELECT user.id, profile.id FROM user user, profile profile
-  where user.sso_id='sam' and profile.type='ADMIN';
+INSERT INTO WORKER_TO_PROFILE (worker_id, worker_profile_id)
+  SELECT worker.id, profile.id FROM worker worker, profile profile
+  where worker.sso_id='admin' and profile.type='ADMIN';
  
 /* Create persistent_logins Table used to store rememberme related stuff*/
 CREATE TABLE persistent_logins (
-    username VARCHAR(64) NOT NULL,
-    series VARCHAR(64) NOT NULL,
-    token VARCHAR(64) NOT NULL,
-    last_used TIMESTAMP NOT NULL,
-    PRIMARY KEY (series)
+  workername VARCHAR(64) NOT NULL,
+  series VARCHAR(64) NOT NULL,
+  token VARCHAR(64) NOT NULL,
+  last_used TIMESTAMP NOT NULL,
+  PRIMARY KEY (series)
 );
