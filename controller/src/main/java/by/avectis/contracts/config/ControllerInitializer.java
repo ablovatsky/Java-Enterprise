@@ -1,10 +1,13 @@
 package by.avectis.contracts.config;
 
+import javax.servlet.Filter;
+
+import org.sitemesh.webapp.SiteMeshFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-/**
- * Created by vital on 26.03.2017.
- */
+
 public class ControllerInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
@@ -21,4 +24,12 @@ public class ControllerInitializer extends AbstractAnnotationConfigDispatcherSer
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        return new Filter[] { new HiddenHttpMethodFilter(), characterEncodingFilter };
+    }
+
 }

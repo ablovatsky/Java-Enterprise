@@ -3,6 +3,7 @@ package by.avectis.contracts.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -39,8 +40,8 @@ public class Worker implements Serializable{
 	@Column(name="EMAIL", nullable=false)
 	private String email;
 
-    @NotEmpty
-    @ManyToOne(fetch = FetchType.LAZY)
+	@NotNull
+    @ManyToOne
     @JoinColumn(name = "subdivision_id")
     private Subdivision subdivision;
 

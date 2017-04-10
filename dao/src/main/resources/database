@@ -15,10 +15,10 @@ create table WORKER (
   last_name  VARCHAR(30) NOT NULL,
   patronymic VARCHAR(30) NOT NULL,
   email VARCHAR(30) NOT NULL,
-  subdivision BIGINT NOT NULL,
+  subdivision_id BIGINT NOT NULL,
   PRIMARY KEY (id),
   UNIQUE (sso_id),
-  FOREIGN KEY (subdivision) REFERENCES SUBDIVISION (id)
+  FOREIGN KEY (subdivision_id) REFERENCES SUBDIVISION (id)
 
 );
    
@@ -53,7 +53,7 @@ VALUES ('DBA');
 INSERT INTO SUBDIVISION(name)
 VALUES ('ОРПО');
 
-INSERT INTO WORKER(sso_id, password, first_name, last_name, patronymic, email, subdivision)
+INSERT INTO WORKER(sso_id, password, first_name, last_name, patronymic, email, subdivision_id)
 VALUES ('admin','$2a$04$psdZWu3EpehkjnL0cERrhOFE8EtBIUh4apzAXVSv4j9EoA3HKENcS', 'Admin','Admin','admin','admin@admin.com', (SELECT id FROM subdivision WHERE name LIKE 'ОРПО'));
 
 

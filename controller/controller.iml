@@ -32,6 +32,7 @@
     <orderEntry type="module" module-name="dao" />
     <orderEntry type="module" module-name="service" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.sitemesh:sitemesh:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:4.2.5.RELEASE" level="project" />

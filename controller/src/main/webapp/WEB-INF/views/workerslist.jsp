@@ -50,7 +50,7 @@
 						<td>${worker.ssoId}</td>
                         <td>${worker.lastName}</td>
                         <td>${worker.firstName}</td>
-                        <td>${worker.subdivision}</td>
+                        <td>${worker.subdivision.name}</td>
 					    <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
 							<td><a href="<c:url value='/edit-worker-${worker.ssoId}' />" class="btn btn-success custom-width">edit</a></td>
 				        </sec:authorize>

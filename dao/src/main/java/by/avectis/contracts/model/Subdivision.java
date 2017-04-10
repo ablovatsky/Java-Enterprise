@@ -1,5 +1,7 @@
 package by.avectis.contracts.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,8 +16,9 @@ public class Subdivision implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotEmpty
     @Column(name = "NAME", unique = true, nullable=false)
-    private String name = SubdivisionName.SDD.getSubdivisionName();
+    private String name ;
 
     @OneToMany(mappedBy = "subdivision")
     private Set<Worker> workerList = new HashSet<>();
