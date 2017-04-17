@@ -89,7 +89,7 @@ public class SecurityController {
 			workerProfiles.add(profileService.findByType(ProfileType.USER.getProfileType()));
 			worker.setWorkerProfiles(workerProfiles);
 		}
-		workerService.saveWorker(worker);
+		workerService.addWorker(worker);
 		model.addAttribute("success", "Worker " + worker.getFirstName() + " "+ worker.getLastName() + " registered successfully");
 		model.addAttribute("loggedinworker", getPrincipal());
 		//return "success";
@@ -99,7 +99,7 @@ public class SecurityController {
 
 	@RequestMapping(value = { "/edit-worker-{ssoId}" }, method = RequestMethod.GET)
 	public String editWorker(@PathVariable String ssoId, ModelMap model) {
-		Worker worker = workerService.findBySSO(ssoId);
+		Worker worker = workerService.findWorkerBySSO(ssoId);
 		model.addAttribute("worker", worker);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinworker", getPrincipal());
