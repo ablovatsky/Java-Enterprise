@@ -1,6 +1,7 @@
 package by.avectis.contracts.dao;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +21,52 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	}
 
 	private Session getSession(){
-		return sessionFactory.getCurrentSession();
+		try {
+			return sessionFactory.getCurrentSession();
+		} catch (HibernateException e) {
+			throw new DaoException(e.toString(), e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	protected T getById(PK key) {
-		return (T) getSession().get(persistentClass, key);
+	protected T getById(PK key){
+		try {
+			return (T) getSession().get(persistentClass, key);
+		} catch(HibernateException e) {
+			throw new DaoException(e.toString(), e);
+		}
 	}
 
-	protected void persist(T entity) {
-		getSession().persist(entity);
+	protected void persist(T entity){
+        try {
+            getSession().persist(entity);
+        } catch(HibernateException e) {
+            throw new DaoException(e.toString(), e);
+        }
 	}
 
-	protected void update(T entity) {
-		getSession().update(entity);
+	protected void update(T entity){
+        try {
+            getSession().update(entity);
+        } catch(HibernateException e) {
+            throw new DaoException(e.toString(), e);
+        }
 	}
 
-	protected void delete(T entity) {
-		getSession().delete(entity);
+	protected void delete(T entity){
+        try {
+            getSession().delete(entity);
+        } catch(HibernateException e) {
+            throw new DaoException(e.toString(), e);
+        }
 	}
 	
 	protected Criteria createEntityCriteria(){
-		return getSession().createCriteria(persistentClass);
+        try {
+            return getSession().createCriteria(persistentClass);
+        } catch(HibernateException e) {
+            throw new DaoException(e.toString(), e);
+        }
 	}
 
 }

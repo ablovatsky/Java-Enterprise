@@ -1,22 +1,22 @@
 package by.avectis.contracts.config;
 
-import javax.servlet.Filter;
-
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 
 public class ControllerInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { ControllerConfiguration.class };
+        return new Class[] { TestControllerConfiguration.class };
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { ControllerConfiguration.class };
+        return new Class[] { TestControllerConfiguration.class };
     }
 
     @Override
@@ -24,11 +24,11 @@ public class ControllerInitializer extends AbstractAnnotationConfigDispatcherSer
         return new String[] { "/" };
     }
 
-   /* @Override
+    @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         return new Filter[] { new HiddenHttpMethodFilter(), characterEncodingFilter };
-    }*/
+    }
 
 }

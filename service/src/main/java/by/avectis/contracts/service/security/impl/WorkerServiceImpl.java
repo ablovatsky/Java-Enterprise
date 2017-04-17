@@ -1,7 +1,9 @@
 package by.avectis.contracts.service.security.impl;
 
+import by.avectis.contracts.dao.DaoException;
 import by.avectis.contracts.dao.security.WorkerDao;
 import by.avectis.contracts.model.Worker;
+import by.avectis.contracts.service.ServiceException;
 import by.avectis.contracts.service.security.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 
 @Service("workerService")
 @Transactional
@@ -22,43 +23,74 @@ public class WorkerServiceImpl implements WorkerService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-	public Worker findById(Long id) {
-		return dao.findById(id);
+	public Worker findWorkerById(Long id) {
+        try {
+		    return dao.findWorkerById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
 	}
 
     @Override
-	public Worker findBySSO(String sso) {
-		return dao.findBySSO(sso);
+	public Worker findWorkerBySSO(String sso) {
+        try {
+		    return dao.findWorkerBySSO(sso);
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
 	}
 
     @Override
-	public void saveWorker(Worker worker) {
+	public void addWorker(Worker worker) {
 		worker.setPassword(passwordEncoder.encode(worker.getPassword()));
-		dao.addWorker(worker);
+		try {
+			dao.addWorker(worker);
+		} catch (DaoException e) {
+			throw new ServiceException(e.toString(), e);
+		}
 	}
 
     @Override
 	public void updateWorker(Worker worker) {
         if (worker != null) {
             worker.setPassword(passwordEncoder.encode(worker.getPassword()));
-            dao.updateWorker(worker);
+            try {
+                dao.updateWorker(worker);
+            } catch (DaoException e) {
+                throw new ServiceException(e.toString(), e);
+            }
         }
 	}
 
     @Override
 	public void deleteWorkerBySSO(String sso) {
-		dao.deleteBySSO(sso);
+        try {
+            Worker worker = dao.findWorkerBySSO(sso);
+            if (worker != null) {
+                dao.deleteWorker(worker);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
 	}
 
     @Override
 	public List<Worker> findAllWorkers() {
-		return dao.findAllWorkers();
+        try {
+            return dao.findAllWorkers();
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
 	}
 
     @Override
 	public boolean isWorkerSSOUnique(String sso) {
-		Worker user = findBySSO(sso);
-		return  user == null;
+        try {
+            Worker user = findWorkerBySSO(sso);
+            return  user == null;
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
 	}
 	
 }

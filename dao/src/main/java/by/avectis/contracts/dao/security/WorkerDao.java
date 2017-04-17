@@ -1,5 +1,6 @@
 package by.avectis.contracts.dao.security;
 
+import by.avectis.contracts.dao.DaoException;
 import by.avectis.contracts.model.Worker;
 
 import java.util.List;
@@ -7,17 +8,17 @@ import java.util.List;
 
 public interface WorkerDao {
 
-	Worker findById(Long id);
+	Worker findWorkerById(Long id) throws DaoException;
 	
-	Worker findBySSO(String sso);
+	Worker findWorkerBySSO(String sso) throws DaoException;
 	
-	void addWorker(Worker worker);
+	void addWorker(Worker worker) throws DaoException;
 
-	void updateWorker(Worker worker);
+	void updateWorker(Worker worker) throws DaoException;
 	
-	void deleteBySSO(String sso);
+	void deleteWorker(Worker worker) throws DaoException;
 	
-	List<Worker> findAllWorkers();
+	List<Worker> findAllWorkers() throws DaoException;
 
 }
 

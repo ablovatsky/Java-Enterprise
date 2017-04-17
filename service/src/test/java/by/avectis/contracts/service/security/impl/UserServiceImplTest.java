@@ -1,11 +1,17 @@
 package by.avectis.contracts.service.security.impl;
 
-/*import by.pvt.restaurants.config.ControllerConfiguration;
-import Profile;
-import ProfileType;
-import Worker;
-import ProfileService;
-import WorkerService;
+
+import by.avectis.contracts.config.TestControllerConfiguration;
+import by.avectis.contracts.dao.DaoException;
+import by.avectis.contracts.model.Profile;
+import by.avectis.contracts.model.ProfileType;
+import by.avectis.contracts.model.Subdivision;
+import by.avectis.contracts.model.Worker;
+import by.avectis.contracts.service.ServiceException;
+import by.avectis.contracts.service.security.ProfileService;
+import by.avectis.contracts.service.security.SubdivisionService;
+import by.avectis.contracts.service.security.WorkerService;
+import org.hibernate.HibernateException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +22,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;*/
+import java.util.Set;
 
-/*@DirtiesContext
+
+@DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ControllerConfiguration.class)
-@WebAppConfiguration*/
+@ContextConfiguration(classes = TestControllerConfiguration.class)
+@WebAppConfiguration
 public class UserServiceImplTest  {
-
-/*
 
     @Autowired
     private WorkerService workerService;
@@ -32,69 +37,105 @@ public class UserServiceImplTest  {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private SubdivisionService subdivisionService;
 
     private Worker worker;
 
     @Test
-    public void deleteUserBySSO() throws Exception {
-        workerService.deleteWorkerBySSO("workerTest");
-    }
-
-    @Test
-    public void isUserSSOUnique() throws Exception {
-        if (workerService.isWorkerSSOUnique("admin")){
-            System.out.println("SSO - уникальное");
-        } else {
-            System.out.println("SSO - неуникальное");
+    public void deleteUserBySSO(){
+        try {
+            workerService.deleteWorkerBySSO("workerTest");
+        } catch (ServiceException e) {
+            e.printStackTrace();
         }
     }
 
     @Test
-    public void saveUser() throws Exception {
-        worker = new Worker();
-        Set<Profile> workerProfiles = new HashSet<>();
-        workerProfiles.add(profileService.findByType(ProfileType.USER.getProfileType()));
-        worker.setPassword("workerTest");
-        worker.setWorkerProfiles(workerProfiles);
-        workerService.saveWorker(worker);
-    }
-
-    @Test
-    public void findBySSO() throws Exception {
-        worker = workerService.findBySSO("workerTest");
-        if (worker == null) {
-            System.out.println("Пользователь не найден");
-        } else {
-            System.out.println(worker.toString());
+    public void isUserSSOUnique(){
+        try {
+            if (workerService.isWorkerSSOUnique("admin")){
+                System.out.println("SSO - уникальное");
+            } else {
+                System.out.println("SSO - неуникальное");
+            }
+        } catch (ServiceException e) {
+            e.printStackTrace();
         }
     }
 
     @Test
-    public void updateUser() throws Exception {
-        worker = workerService.findBySSO("workerTest");
+    public void saveUser(){
+        try {
+            worker = new Worker();
+            Set<Profile> workerProfiles = new HashSet<>();
+            workerProfiles.add(profileService.findByType(ProfileType.USER.getProfileType()));
+            Subdivision subdivision = subdivisionService.findByName("ОРПО");
+            worker.setFirstName("workerTest");
+            worker.setLastName("workerTest");
+            worker.setSsoId("workerTest");
+            worker.setPatronymic("workerTest");
+            worker.setPassword("workerTest");
+            worker.setWorkerProfiles(workerProfiles);
+            worker.setSubdivision(subdivision);
+            worker.setEmail("workerTest");
+            workerService.addWorker(worker);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void findBySSO(){
+        try {
+            worker = workerService.findWorkerBySSO("workerTest");
+            if (worker == null) {
+                System.out.println("Пользователь не найден");
+            } else {
+                System.out.println(worker.toString());
+            }
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void updateUser(){
+        try {
+        worker = workerService.findWorkerBySSO("workerTest");
         workerService.updateWorker(worker);
-    }
-
-    @Test
-    public void findById() throws Exception {
-        worker = workerService.findById(176);
-        if (worker == null) {
-            System.out.println("Пользователь не найден");
-        } else {
-            System.out.println(worker.toString());
+        } catch (ServiceException e) {
+            e.printStackTrace();
         }
     }
 
     @Test
-    public void findAllUsers() throws Exception {
+    public void findById(){
+        try {
+            worker = workerService.findWorkerById((long) 176);
+            if (worker == null) {
+                System.out.println("Пользователь не найден");
+            } else {
+                System.out.println(worker.toString());
+            }
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void findAllUsers(){
         System.out.println("Testing findAllWorkers()");
-        List<Worker> workerList =  workerService.findAllWorkers();
-        for (Worker worker : workerList) {
-            System.out.println(worker.toString());
+        try {
+            List<Worker> workerList = workerService.findAllWorkers();
+            for (Worker worker : workerList) {
+                System.out.println(worker.toString());
+            }
+        } catch (ServiceException e) {
+            e.printStackTrace();
         }
     }
 
-*/
 
 
 }

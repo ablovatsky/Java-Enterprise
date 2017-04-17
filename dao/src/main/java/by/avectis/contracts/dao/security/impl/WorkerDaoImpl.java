@@ -1,6 +1,7 @@
 package by.avectis.contracts.dao.security.impl;
 
 import by.avectis.contracts.dao.AbstractDao;
+import by.avectis.contracts.dao.DaoException;
 import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.dao.security.WorkerDao;
 import org.hibernate.Criteria;
@@ -20,7 +21,7 @@ public class WorkerDaoImpl extends AbstractDao<Long, Worker> implements WorkerDa
 	private static final Logger logger = LoggerFactory.getLogger(WorkerDaoImpl.class);
 
 	@Override
-	public Worker findById(Long id) {
+	public Worker findWorkerById(Long id) {
 		Worker user = getById(id);
 		if(user!=null){
 			Hibernate.initialize(user.getWorkerProfiles());
@@ -29,7 +30,7 @@ public class WorkerDaoImpl extends AbstractDao<Long, Worker> implements WorkerDa
 	}
 
 	@Override
-	public Worker findBySSO(String sso) {
+	public Worker findWorkerBySSO(String sso) {
 		logger.info("SSO : {}", sso);
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("ssoId", sso));
@@ -53,7 +54,7 @@ public class WorkerDaoImpl extends AbstractDao<Long, Worker> implements WorkerDa
 	}
 
 	@Override
-	public void addWorker(Worker worker) {
+	public void addWorker(Worker worker) throws DaoException {
 		this.persist(worker);
 	}
 
@@ -63,11 +64,8 @@ public class WorkerDaoImpl extends AbstractDao<Long, Worker> implements WorkerDa
     }
 
     @Override
-	public void deleteBySSO(String sso) {
-		Criteria criteria = createEntityCriteria();
-		criteria.add(Restrictions.eq("ssoId", sso));
-		Worker user = (Worker)criteria.uniqueResult();
-		delete(user);
+	public void deleteWorker(Worker worker) {
+		delete(worker);
 	}
 
 }

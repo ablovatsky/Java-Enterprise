@@ -90,7 +90,6 @@ public class SecurityController {
 			worker.setWorkerProfiles(workerProfiles);
 		}
 		workerService.saveWorker(worker);
-
 		model.addAttribute("success", "Worker " + worker.getFirstName() + " "+ worker.getLastName() + " registered successfully");
 		model.addAttribute("loggedinworker", getPrincipal());
 		//return "success";
@@ -128,16 +127,6 @@ public class SecurityController {
 		return "redirect:/list";
 	}
 
-	@ModelAttribute("roles")
-	public List<Profile> initializeProfiles() {
-		return profileService.findAll();
-	}
-
-	@ModelAttribute("subdivisions")
-	public List<Subdivision> initializeSubdivisions() {
-	    return subdivisionService.findAll();
-    }
-
 	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
 	public String accessDeniedPage(ModelMap model) {
 		model.addAttribute("loggedinworker", getPrincipal());
@@ -163,6 +152,16 @@ public class SecurityController {
 		return "redirect:/login?logout";
 	}
 
+	@ModelAttribute("roles")
+	public List<Profile> initializeProfiles() {
+		return profileService.findAll();
+	}
+
+	@ModelAttribute("subdivisions")
+	public List<Subdivision> initializeSubdivisions() {
+		return subdivisionService.findAll();
+	}
+
 	private String getPrincipal(){
 		String workerName;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -179,6 +178,5 @@ public class SecurityController {
 	    final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    return authenticationTrustResolver.isAnonymous(authentication);
 	}
-
 
 }

@@ -1,24 +1,26 @@
 package by.avectis.contracts.service.security;
 
+import by.avectis.contracts.dao.DaoException;
 import by.avectis.contracts.model.Worker;
+import by.avectis.contracts.service.ServiceException;
 
 import java.util.List;
 
 
 public interface WorkerService {
 	
-	Worker findById(Long id);
+	Worker findWorkerById(Long id) throws ServiceException;
 	
-	Worker findBySSO(String sso);
+	Worker findWorkerBySSO(String sso) throws ServiceException;
 	
-	void saveWorker(Worker worker);
+	void addWorker(Worker worker) throws ServiceException;
 	
-	void updateWorker(Worker worker);
+	void updateWorker(Worker worker) throws ServiceException;
 	
-	void deleteWorkerBySSO(String sso);
+	void deleteWorkerBySSO(String sso) throws ServiceException;
 
-	List<Worker> findAllWorkers();
+	List<Worker> findAllWorkers() throws ServiceException;
 	
-	boolean isWorkerSSOUnique(String sso);
+	boolean isWorkerSSOUnique(String sso) throws ServiceException;
 
 }
