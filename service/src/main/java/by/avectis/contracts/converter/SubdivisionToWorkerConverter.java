@@ -1,7 +1,7 @@
 package by.avectis.contracts.converter;
 
 import by.avectis.contracts.model.Subdivision;
-import by.avectis.contracts.service.security.SubdivisionService;
+import by.avectis.contracts.service.subdivision.SubdivisionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

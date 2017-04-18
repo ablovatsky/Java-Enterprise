@@ -2,7 +2,7 @@ package by.avectis.contracts.converter;
 
 
 import by.avectis.contracts.model.Profile;
-import by.avectis.contracts.service.security.ProfileService;
+import by.avectis.contracts.service.worker.ProfileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
