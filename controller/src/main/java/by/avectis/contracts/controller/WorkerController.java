@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -58,14 +59,6 @@ public class WorkerController {
 	@Autowired
 	private	AuthenticationTrustResolver authenticationTrustResolver;
 
-	/*@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
-	public String listWorkers(ModelMap model) {
-		List<Worker> workers = workerService.findAllWorkers();
-		model.addAttribute("workers", workers);
-		model.addAttribute("loggedinworker", getPrincipal());
-		return "workerslist";
-	}*/
-
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String listWorkers() {
 		return "workerslist";
@@ -76,19 +69,24 @@ public class WorkerController {
 	public String getListWorkers() {
 		JSONObject jsonObject = workerDTO.getWorkerListToJson();
 		jsonObject.put("loggedinworker", getPrincipal());
-		/*List<Worker> workers = workerService.findAllWorkers();
-		model.addAttribute("workers", workers);
-		model.addAttribute("loggedinworker", getPrincipal());*/
 		return jsonObject.toString();
 	}
 
-	@RequestMapping(value = {"/newworker" }, method = RequestMethod.GET)
-	public String newWorker(ModelMap model) {
-		Worker worker = new Worker();
-		model.addAttribute("worker", worker);
-		model.addAttribute("edit", false);
-		model.addAttribute("loggedinworker", getPrincipal());
-		return "registration";
+    @RequestMapping(value = {"/new-worker" }, method = RequestMethod.GET)
+    public String newWorker(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        session.setAttribute("ssoId", 1);
+        return "registration";
+    }
+
+	@RequestMapping(value = {"/getNewWorker" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+	public String getNewWorker() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("edit", false);
+        jsonObject.put("worker", new Worker());
+        jsonObject.put("loggedinworker", getPrincipal());
+		return jsonObject.toString();
 	}
 
 	@RequestMapping(value = { "/newworker" }, method = RequestMethod.POST)

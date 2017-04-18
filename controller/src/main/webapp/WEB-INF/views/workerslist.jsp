@@ -11,7 +11,7 @@
 	<link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
 	<link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
     <script src="<c:url value='//static/js/jquery-1.11.3.js' />" ></script>
-    <script src="<c:url value='//static/js/worker/worker.js' />" ></script>
+    <script src="<c:url value='//static/js/worker/workerList.js' />" ></script>
 </head>
 
 
@@ -19,21 +19,14 @@
 <body>
 	<div class="generic-container">
 		<%@include file="authheader.jsp" %>
-
-        <sec:authorize access="hasRole('ADMIN')">
-            <div class="well">
-                <a href="<c:url value='/newworker' />" onclick="showValues()">Add New Worker</a>
-            </div>
-        </sec:authorize>
-
+		<div class="well">
+			<a href='/contracts/new-worker'>Add New Worker</a>
+		</div>
 		<div class="panel panel-default">
 		  	<div class="panel-heading"><span class="lead">List of Workers </span></div>
 			<table class="table table-hover">
-
-
 	    	</table>
 		</div>
-
    	</div>
 </body>
 </html>
