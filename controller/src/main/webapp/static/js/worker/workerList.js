@@ -4,22 +4,22 @@ $(document).ready(function() {
         url : "/contracts/getWorkers",
         success: function(result){
             var json_data= JSON.parse(result);
-            filWorkerList(json_data);
+            fillWorkerList(json_data);
         }
     });
 });
 
-function filWorkerList(data) {
+function fillWorkerList(data) {
     $('.loggedinworker').text(data.loggedinworker);
     var workerTable;
-    workerTable += '<thead>';
+    workerTable = '<thead>';
     workerTable += '<tr>';
     workerTable += '<th>SSO ID</th>';
     workerTable += '<th>Last Name</th>';
     workerTable += '<th>First Name</th>';
     workerTable += '<th>Subdivision</th>';
-    workerTable += '<th width="100"></th>';
-    workerTable += '<th width="100"></th>';
+    workerTable += '<th width="150"></th>';
+    workerTable += '<th width="150"></th>';
     workerTable += '</tr>';
     workerTable += '</thead>';
     data.workerList.forEach(function ( worker ) {
@@ -37,7 +37,7 @@ function filWorkerList(data) {
         workerTable += worker.subdivision;
         workerTable += '</td>';
         workerTable += '<td>';
-        workerTable += "<a href='/contracts/edit-worker-"+worker.ssoId+"' class='btn btn-success custom-width'>Ред-ть</a>";
+        workerTable += "<a href='/contracts/edit-worker-"+worker.ssoId+"' class='btn btn-success custom-width'>Редактировать</a>";
         workerTable += '</td>';
         workerTable += '<td>';
         workerTable += "<a href='/contracts/delete-worker-"+worker.ssoId+"' class='btn btn-danger custom-width'>Удалить</a>";

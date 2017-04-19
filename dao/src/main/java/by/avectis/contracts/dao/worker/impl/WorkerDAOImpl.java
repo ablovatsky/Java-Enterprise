@@ -25,6 +25,7 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 		Worker user = getById(id);
 		if(user!=null){
 			Hibernate.initialize(user.getWorkerProfiles());
+			Hibernate.initialize(user.getSubdivision());
 		}
 		return user;
 	}
@@ -37,6 +38,7 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 		Worker user = (Worker)criteria.uniqueResult();
 		if(user!=null){
 			Hibernate.initialize(user.getWorkerProfiles());
+			Hibernate.initialize(user.getSubdivision().getWorkerList());
 		}
 		return user;
 	}
@@ -49,8 +51,9 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 		List<Worker> users = (List<Worker>) criteria.list();
 		for(Worker user : users){
 			Hibernate.initialize(user.getWorkerProfiles());
+			Hibernate.initialize(user.getSubdivision());
 		}
-		return (List<Worker>) criteria.list();
+		return  users;
 	}
 
 	@Override

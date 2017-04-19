@@ -157,7 +157,7 @@ public class Worker implements Serializable{
 
     @Override
     public String toString() {
-        return "Worker{" +
+        return "{" +
                 "id=" + id +
                 ", ssoId='" + ssoId + '\'' +
                 ", password='" + password + '\'' +

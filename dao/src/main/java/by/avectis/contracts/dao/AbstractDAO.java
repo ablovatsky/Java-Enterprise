@@ -14,7 +14,7 @@ public abstract class AbstractDAO<PK extends Serializable, T> {
 	private final Class<T> persistentClass;
 
     @Autowired
-    private	SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
 	public AbstractDAO(){

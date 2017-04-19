@@ -20,6 +20,7 @@ public class Subdivision implements Serializable{
     @Column(name = "NAME", unique = true, nullable=false)
     private String name ;
 
+    @NotEmpty
     @OneToMany(mappedBy = "subdivision")
     private Set<Worker> workerList = new HashSet<>();
 
@@ -83,6 +84,7 @@ public class Subdivision implements Serializable{
         return "Subdivision{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", workerList=" + workerList +
                 '}';
     }
 }

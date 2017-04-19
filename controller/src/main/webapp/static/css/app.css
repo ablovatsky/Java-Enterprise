@@ -19,6 +19,7 @@ body{
 }
 
 .has-error{
+    margin-top: 2px;
 	color:red;
 }
 
@@ -35,7 +36,7 @@ body{
 }
 
 .custom-width {
-    width: 80px !important;
+    width: 120px !important;
 }
 
 body, #mainWrapper, .form-control{

@@ -19,7 +19,6 @@ create table WORKER (
   PRIMARY KEY (id),
   UNIQUE (sso_id),
   FOREIGN KEY (subdivision_id) REFERENCES SUBDIVISION (id)
-
 );
    
 /* WORKER_PROFILE table contains all possible roles */

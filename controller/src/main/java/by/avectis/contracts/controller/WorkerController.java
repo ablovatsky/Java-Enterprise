@@ -1,10 +1,7 @@
 package by.avectis.contracts.controller;
 
 
-import by.avectis.contracts.dto.worker.WorkerDTO;
-import by.avectis.contracts.model.Profile;
-import by.avectis.contracts.model.ProfileType;
-import by.avectis.contracts.model.Subdivision;
+import by.avectis.contracts.dto.worker.UtilDTO;
 import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.service.worker.ProfileService;
 import by.avectis.contracts.service.subdivision.SubdivisionService;
@@ -20,17 +17,12 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 
 @Controller
@@ -42,7 +34,7 @@ public class WorkerController {
 	private WorkerService workerService;
 
 	@Autowired
-	private WorkerDTO workerDTO;
+	private UtilDTO utilDTO;
 	
 	@Autowired
 	private ProfileService profileService;
@@ -67,7 +59,7 @@ public class WorkerController {
 	@RequestMapping(value = { "/getWorkers" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String getListWorkers() {
-		JSONObject jsonObject = workerDTO.getWorkerListToJson();
+		JSONObject jsonObject = utilDTO.getWorkerListToJson();
 		jsonObject.put("loggedinworker", getPrincipal());
 		return jsonObject.toString();
 	}
@@ -75,25 +67,26 @@ public class WorkerController {
     @RequestMapping(value = {"/new-worker" }, method = RequestMethod.GET)
     public String newWorker(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        session.setAttribute("ssoId", 1);
+        session.setAttribute("ssoId", "newWorker");
         return "registration";
     }
 
-	@RequestMapping(value = {"/getNewWorker" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
     @ResponseBody
+	@RequestMapping(value = {"/getNewWorker" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
 	public String getNewWorker() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("edit", false);
-        jsonObject.put("worker", new Worker());
         jsonObject.put("loggedinworker", getPrincipal());
+		jsonObject.put("roles", profileService.findAll());
+		jsonObject.put("subdivision", subdivisionService.findAll());
 		return jsonObject.toString();
 	}
 
-	@RequestMapping(value = { "/newworker" }, method = RequestMethod.POST)
-	public String saveWorker(@Valid Worker worker, BindingResult result,
-						   ModelMap model) {
+    @ResponseBody
+	@RequestMapping(value = { "/new-worker" }, method = RequestMethod.POST)
+	public Worker saveWorker(@RequestBody Worker jsonString) {
 
-		if (result.hasErrors()) {
+        int a = 0;
+		/*if (result.hasErrors()) {
 			return "registration";
 		}
 
@@ -110,18 +103,31 @@ public class WorkerController {
 		}
 		workerService.addWorker(worker);
 		model.addAttribute("success", "Worker " + worker.getFirstName() + " "+ worker.getLastName() + " registered successfully");
-		model.addAttribute("loggedinworker", getPrincipal());
-		return "registrationsuccess";
+		model.addAttribute("loggedinworker", getPrincipal());*/
+		return jsonString;
 	}
 
 
 	@RequestMapping(value = { "/edit-worker-{ssoId}" }, method = RequestMethod.GET)
-	public String editWorker(@PathVariable String ssoId, ModelMap model) {
-		Worker worker = workerService.findWorkerBySSO(ssoId);
-		model.addAttribute("worker", worker);
-		model.addAttribute("edit", true);
-		model.addAttribute("loggedinworker", getPrincipal());
+	public String editWorker(@PathVariable String ssoId, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		session.setAttribute("ssoId", ssoId);
 		return "registration";
+	}
+
+	@RequestMapping(value = { "/get-edit-worker-{ssoId}" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String getEditWorker(@PathVariable String ssoId) {
+		Worker worker = workerService.findWorkerBySSO(ssoId);
+		if (worker != null) {
+			JSONObject jsonObject =new JSONObject();
+			jsonObject.put("worker", utilDTO.getWorkerToJson(worker));
+			jsonObject.put("loggedinworker", getPrincipal());
+			jsonObject.put("roles", profileService.findAll());
+			jsonObject.put("subdivision", subdivisionService.findAll());
+			return jsonObject.toString();
+		}
+		return "workerslist";
 	}
 
 	@RequestMapping(value = { "/edit-worker-{ssoId}" }, method = RequestMethod.POST)
@@ -168,16 +174,6 @@ public class WorkerController {
 			SecurityContextHolder.getContext().setAuthentication(null);
 		}
 		return "redirect:/login?logout";
-	}
-
-	@ModelAttribute("roles")
-	public List<Profile> initializeProfiles() {
-		return profileService.findAll();
-	}
-
-	@ModelAttribute("subdivisions")
-	public List<Subdivision> initializeSubdivisions() {
-		return subdivisionService.findAll();
 	}
 
 	private String getPrincipal(){
