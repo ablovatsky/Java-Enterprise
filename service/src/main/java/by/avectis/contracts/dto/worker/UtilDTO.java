@@ -24,10 +24,11 @@ public class UtilDTO implements Serializable {
     private InfoWorker worker;
 
     public UtilDTO() {
-        workerList = new LinkedHashSet<>();
+
     }
 
     private void setWorkerList() {
+        workerList = new LinkedHashSet<>();
         List<Worker> workerList = workerService.findAllWorkers();
         workerList.forEach( worker -> this.workerList.add(new ShortInfoWorker(worker)) );
     }
@@ -56,6 +57,8 @@ public class UtilDTO implements Serializable {
 
     public class InfoWorker implements Serializable {
 
+        private long id;
+
         private String ssoId;
 
         private String password;
@@ -76,6 +79,7 @@ public class UtilDTO implements Serializable {
         }
 
         public InfoWorker(Worker worker) {
+            id = worker.getId();
             ssoId = worker.getSsoId();
             firstName = worker.getFirstName();
             lastName = worker.getLastName();
@@ -84,6 +88,14 @@ public class UtilDTO implements Serializable {
             email = worker.getEmail();
             subdivision = worker.getSubdivision().getName();
             worker.getWorkerProfiles().forEach(profile -> workerProfiles.add(profile.getType()));
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
         }
 
         public String getSsoId() {
@@ -168,7 +180,8 @@ public class UtilDTO implements Serializable {
         @Override
         public String toString() {
             return "InfoWorker{" +
-                    "ssoId='" + ssoId + '\'' +
+                    "id=" + id +
+                    ", ssoId='" + ssoId + '\'' +
                     ", password='" + password + '\'' +
                     ", firstName='" + firstName + '\'' +
                     ", lastName='" + lastName + '\'' +

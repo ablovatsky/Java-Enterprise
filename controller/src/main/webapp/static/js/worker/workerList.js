@@ -1,16 +1,16 @@
 $(document).ready(function() {
     $.ajax({
         type: "GET",
+        contentType : 'application/json; charset=utf-8',
         url : "/contracts/getWorkers",
         success: function(result){
-            var json_data= JSON.parse(result);
-            fillWorkerList(json_data);
+            fillWorkerList(result);
         }
     });
 });
 
 function fillWorkerList(data) {
-    $('.loggedinworker').text(data.loggedinworker);
+    $('.loggedinworker').text(data.map.loggedinworker);
     var workerTable;
     workerTable = '<thead>';
     workerTable += '<tr>';
@@ -22,28 +22,29 @@ function fillWorkerList(data) {
     workerTable += '<th width="150"></th>';
     workerTable += '</tr>';
     workerTable += '</thead>';
-    data.workerList.forEach(function ( worker ) {
+    var size = data.map.workerList.myArrayList.length;
+    for(var i = 0; i < size; i++ ) {
         workerTable += '<tr>';
         workerTable += '<td>';
-        workerTable += worker.ssoId;
+        workerTable += data.map.workerList.myArrayList[i].map.ssoId;
         workerTable += '</td>';
         workerTable += '<td>';
-        workerTable += worker.firstName;
+        workerTable += data.map.workerList.myArrayList[i].map.firstName;
         workerTable += '</td>';
         workerTable += '<td>';
-        workerTable += worker.lastName;
+        workerTable += data.map.workerList.myArrayList[i].map.lastName;
         workerTable += '</td>';
         workerTable += '<td>';
-        workerTable += worker.subdivision;
+        workerTable += data.map.workerList.myArrayList[i].map.subdivision;
         workerTable += '</td>';
         workerTable += '<td>';
-        workerTable += "<a href='/contracts/edit-worker-"+worker.ssoId+"' class='btn btn-success custom-width'>Редактировать</a>";
+        workerTable += "<a href='/contracts/edit-worker-"+data.map.workerList.myArrayList[i].map.ssoId+"' class='btn btn-success custom-width'>Редактировать</a>";
         workerTable += '</td>';
         workerTable += '<td>';
-        workerTable += "<a href='/contracts/delete-worker-"+worker.ssoId+"' class='btn btn-danger custom-width'>Удалить</a>";
+        workerTable += "<a href='/contracts/delete-worker-"+data.map.workerList.myArrayList[i].map.ssoId+"' class='btn btn-danger custom-width'>Удалить</a>";
         workerTable += '</td>';
         workerTable += '</tr>';
-    });
+    }
     $('.table').append(workerTable);
 }
 

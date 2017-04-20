@@ -7,6 +7,8 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>Worker Registration Form</title>
     <link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
     <link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
@@ -18,9 +20,8 @@
 <div class="generic-container">
     <input type="hidden" id="hdnSession" data-value=<%= session.getAttribute("ssoId") %> />
     <%@include file="authheader.jsp" %>
+
     <div class="well lead"></div>
-
-
         <div class="row">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="firstName">Имя</label>
@@ -55,7 +56,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="ssoId">SSO ID</label>
                 <div class="col-md-7">
-                    <input type="text" id="ssoId" class="form-control input-sm" />
+                    <input type="text" id="ssoId" pattern="^[a-zA-Z]+$" class="form-control input-sm" />
                     <div id="ssoIdError" class="has-error"></div>
                 </div>
             </div>
@@ -75,7 +76,7 @@
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="email">Почтовый адрес</label>
                 <div class="col-md-7">
-                    <input type="text" id="email" class="form-control input-sm" />
+                    <input type="email" id="email" class="form-control input-sm" />
                     <div id="emailError" class="has-error"></div>
                 </div>
             </div>

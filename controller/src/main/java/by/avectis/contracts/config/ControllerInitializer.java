@@ -13,11 +13,12 @@ public class ControllerInitializer extends AbstractAnnotationConfigDispatcherSer
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] { ControllerConfiguration.class };
+
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { ControllerConfiguration.class };
+        return null;
     }
 
     @Override

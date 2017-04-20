@@ -3,6 +3,7 @@ package by.avectis.contracts.controller;
 
 import by.avectis.contracts.dto.worker.UtilDTO;
 import by.avectis.contracts.model.Worker;
+import by.avectis.contracts.service.exception.ServiceException;
 import by.avectis.contracts.service.worker.ProfileService;
 import by.avectis.contracts.service.subdivision.SubdivisionService;
 import by.avectis.contracts.service.worker.WorkerService;
@@ -41,9 +42,6 @@ public class WorkerController {
 
 	@Autowired
 	private SubdivisionService subdivisionService;
-	
-	@Autowired
-	private	MessageSource messageSource;
 
 	@Autowired
 	private	PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices;
@@ -56,15 +54,15 @@ public class WorkerController {
 		return "workerslist";
 	}
 
-	@RequestMapping(value = { "/getWorkers" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+	@RequestMapping(value = { "/getWorkers" }, method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String getListWorkers() {
+	public JSONObject getListWorkers() {
 		JSONObject jsonObject = utilDTO.getWorkerListToJson();
 		jsonObject.put("loggedinworker", getPrincipal());
-		return jsonObject.toString();
+		return jsonObject;
 	}
 
-    @RequestMapping(value = {"/new-worker" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/new-worker"}, method = RequestMethod.GET)
     public String newWorker(HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.setAttribute("ssoId", "newWorker");
@@ -72,39 +70,30 @@ public class WorkerController {
     }
 
     @ResponseBody
-	@RequestMapping(value = {"/getNewWorker" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
-	public String getNewWorker() {
+	@RequestMapping(value = {"/get-new-worker" }, method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public JSONObject getNewWorker() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("loggedinworker", getPrincipal());
 		jsonObject.put("roles", profileService.findAll());
 		jsonObject.put("subdivision", subdivisionService.findAll());
-		return jsonObject.toString();
+		return jsonObject;
 	}
 
-    @ResponseBody
-	@RequestMapping(value = { "/new-worker" }, method = RequestMethod.POST)
-	public Worker saveWorker(@RequestBody Worker jsonString) {
-
-        int a = 0;
-		/*if (result.hasErrors()) {
-			return "registration";
-		}
-
-		if(!workerService.isWorkerSSOUnique(worker.getSsoId())){
-			FieldError ssoError = new FieldError("worker","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{worker.getSsoId()}, Locale.getDefault()));
-		    result.addError(ssoError);
-			return "registration";
-		}
-
-		if(worker.getWorkerProfiles().isEmpty()) {
-			Set<Profile> workerProfiles = new HashSet<>();
-			workerProfiles.add(profileService.findByType(ProfileType.USER.getProfileType()));
-			worker.setWorkerProfiles(workerProfiles);
-		}
-		workerService.addWorker(worker);
-		model.addAttribute("success", "Worker " + worker.getFirstName() + " "+ worker.getLastName() + " registered successfully");
-		model.addAttribute("loggedinworker", getPrincipal());*/
-		return jsonString;
+	@RequestMapping(value = {"/new-worker"}, method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public JSONObject saveWorker(@RequestBody @Valid Worker worker){
+        JSONObject jsonObject = new JSONObject();
+        if(!workerService.isWorkerSSOUnique(worker.getSsoId())){
+            return jsonObject.put("state", "not unique");
+        }
+        try {
+            workerService.addWorker(worker);
+            jsonObject.put("state", "ok");
+        } catch (ServiceException e) {
+            jsonObject.put("state", "fail");
+            e.printStackTrace();
+        }
+        return jsonObject;
 	}
 
 
@@ -115,9 +104,9 @@ public class WorkerController {
 		return "registration";
 	}
 
-	@RequestMapping(value = { "/get-edit-worker-{ssoId}" }, method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
-	@ResponseBody
-	public String getEditWorker(@PathVariable String ssoId) {
+	@RequestMapping(value = { "/get-edit-worker-{ssoId}" }, method = RequestMethod.GET,  produces = "application/json; charset=utf-8")
+    @ResponseBody
+	public JSONObject getEditWorker(@PathVariable String ssoId) {
 		Worker worker = workerService.findWorkerBySSO(ssoId);
 		if (worker != null) {
 			JSONObject jsonObject =new JSONObject();
@@ -125,25 +114,28 @@ public class WorkerController {
 			jsonObject.put("loggedinworker", getPrincipal());
 			jsonObject.put("roles", profileService.findAll());
 			jsonObject.put("subdivision", subdivisionService.findAll());
-			return jsonObject.toString();
+            System.out.println(jsonObject.toString());
+            return jsonObject;
 		}
-		return "workerslist";
+		return null;
 	}
 
-	@RequestMapping(value = { "/edit-worker-{ssoId}" }, method = RequestMethod.POST)
-	public String updateWorker(@Valid Worker worker, BindingResult result,
-							 ModelMap model, @PathVariable String ssoId) {
-
-		if (result.hasErrors()) {
-			return "registration";
-		}
-
-		workerService.updateWorker(worker);
-
-		model.addAttribute("success", "Worker " + worker.getFirstName() + " "+ worker.getLastName() + " updated successfully");
-		model.addAttribute("loggedinworker", getPrincipal());
-		return "registrationsuccess";
-	}
+	@RequestMapping(value = { "/edit-worker-{ssoId}" }, method = RequestMethod.POST,  produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public JSONObject updateWorker(@RequestBody @Valid Worker worker){
+        JSONObject jsonObject = new JSONObject();
+        if(workerService.isWorkerSSOUnique(worker.getSsoId())){
+            return jsonObject.put("state", "not found");
+        }
+        try {
+            workerService.updateWorker(worker);
+            jsonObject.put("state", "ok");
+        } catch (ServiceException e) {
+            jsonObject.put("state", "fail");
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 
 	@RequestMapping(value = { "/delete-worker-{ssoId}" }, method = RequestMethod.GET)
 	public String deleteWorker(@PathVariable String ssoId) {
