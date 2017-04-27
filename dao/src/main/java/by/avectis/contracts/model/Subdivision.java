@@ -13,14 +13,14 @@ import java.util.Set;
 public class Subdivision implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
     @Column(name = "NAME", unique = true, nullable=false)
     private String name ;
 
-    @NotEmpty
+
     @OneToMany(mappedBy = "subdivision")
     private Set<Worker> workerList = new HashSet<>();
 

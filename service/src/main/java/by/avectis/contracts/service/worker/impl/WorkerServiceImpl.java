@@ -1,7 +1,9 @@
 package by.avectis.contracts.service.worker.impl;
 
 import by.avectis.contracts.dao.exception.DaoException;
+import by.avectis.contracts.dao.subdivision.SubdivisionDao;
 import by.avectis.contracts.dao.worker.WorkerDAO;
+import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.service.exception.ServiceException;
 import by.avectis.contracts.service.worker.WorkerService;
@@ -17,7 +19,10 @@ import java.util.List;
 public class WorkerServiceImpl implements WorkerService {
 
 	@Autowired
-	private WorkerDAO dao;
+	private WorkerDAO workerDAO;
+
+    @Autowired
+    private SubdivisionDao subdivisionDao;
 
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -25,7 +30,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
 	public Worker findWorkerById(Long id) {
         try {
-		    return dao.findWorkerById(id);
+		    return workerDAO.findWorkerById(id);
         } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
@@ -34,7 +39,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
 	public Worker findWorkerBySSO(String sso) {
         try {
-		    return dao.findWorkerBySSO(sso);
+		    return workerDAO.findWorkerBySSO(sso);
         } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
@@ -44,7 +49,7 @@ public class WorkerServiceImpl implements WorkerService {
 	public void addWorker(Worker worker) {
 		worker.setPassword(passwordEncoder.encode(worker.getPassword()));
 		try {
-			dao.addWorker(worker);
+			workerDAO.addWorker(worker);
 		} catch (DaoException e) {
 			throw new ServiceException(e.toString(), e);
 		}
@@ -52,22 +57,30 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
 	public void updateWorker(Worker worker) {
-        if (worker != null) {
-            worker.setPassword(passwordEncoder.encode(worker.getPassword()));
-            try {
-                dao.updateWorker(worker);
-            } catch (DaoException e) {
-                throw new ServiceException(e.toString(), e);
+        try {
+            Worker entity = workerDAO.findWorkerById(worker.getId());
+            if (entity != null) {
+                entity.setSsoId(worker.getSsoId());
+                if (!worker.getPassword().equals(entity.getPassword())) {
+                    entity.setPassword(passwordEncoder.encode(worker.getPassword()));
+                }
+                entity.setFirstName(worker.getFirstName());
+                entity.setLastName(worker.getLastName());
+                entity.setEmail(worker.getEmail());
+                entity.setWorkerProfiles(worker.getWorkerProfiles());
+                entity.setSubdivision(worker.getSubdivision());
             }
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
         }
 	}
 
     @Override
 	public void deleteWorkerBySSO(String sso) {
         try {
-            Worker worker = dao.findWorkerBySSO(sso);
+            Worker worker = workerDAO.findWorkerBySSO(sso);
             if (worker != null) {
-                dao.deleteWorker(worker);
+                workerDAO.deleteWorker(worker);
             }
         } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
@@ -75,13 +88,35 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
     @Override
-	public List<Worker> findAllWorkers() {
+	public List<Worker> findAllWorkers(int count, int setNumber, String sortingColumn, int sortingType) {
         try {
-            return dao.findAllWorkers();
+            return workerDAO.findAllWorkers(count, setNumber, sortingColumn, sortingType);
         } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
 	}
+
+    @Override
+    public List<Worker> findAllWorkersBySubdivisionId(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException {
+        try {
+            Subdivision subdivision = subdivisionDao.findSubdivisionById(subdivisionId);
+            if (subdivision != null) {
+                return workerDAO.findAllWorkersBySubdivisionId(subdivision, count, setNumber, sortingColumn, sortingType);
+            }
+            return null;
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
+    }
+
+    @Override
+    public List<Worker> findAllWorkersByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException {
+        try {
+            return workerDAO.findAllWorkersByLastName(lastName, count, setNumber, sortingColumn, sortingType);
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
+    }
 
     @Override
 	public boolean isWorkerSSOUnique(String sso) {
@@ -92,5 +127,36 @@ public class WorkerServiceImpl implements WorkerService {
             throw new ServiceException(e.toString(), e);
         }
 	}
-	
+
+    @Override
+    public long getCountWorkers() throws ServiceException {
+        try {
+            return workerDAO.getCountWorkers();
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
+    }
+
+    @Override
+    public long getCountWorkers(long subdivisionId) throws ServiceException {
+        try {
+            Subdivision subdivision = subdivisionDao.findSubdivisionById(subdivisionId);
+            if (subdivision != null) {
+                return workerDAO.getCountWorkers(subdivision);
+            }
+            return 0;
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
+    }
+
+    @Override
+    public long getCountWorkers(String lastName) throws ServiceException {
+        try {
+            return workerDAO.getCountWorkers(lastName);
+        } catch (DaoException e) {
+            throw new ServiceException(e.toString(), e);
+        }
+    }
+
 }

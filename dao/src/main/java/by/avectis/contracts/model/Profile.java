@@ -7,7 +7,8 @@ import java.io.Serializable;
 @Table(name="PROFILE")
 public class Profile implements Serializable{
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name="TYPE", length=15, unique=true, nullable=false)

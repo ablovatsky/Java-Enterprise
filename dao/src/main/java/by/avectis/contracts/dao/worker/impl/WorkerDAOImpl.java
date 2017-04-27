@@ -1,7 +1,10 @@
 package by.avectis.contracts.dao.worker.impl;
 
 import by.avectis.contracts.dao.AbstractDAO;
+import by.avectis.contracts.dao.Util.CriteriaBuilder;
+import by.avectis.contracts.dao.Util.UtilDAO;
 import by.avectis.contracts.dao.exception.DaoException;
+import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.dao.worker.WorkerDAO;
 import org.hibernate.Criteria;
@@ -21,7 +24,7 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 	private static final Logger logger = LoggerFactory.getLogger(WorkerDAOImpl.class);
 
 	@Override
-	public Worker findWorkerById(Long id) {
+	public Worker findWorkerById(Long id) throws DaoException {
 		Worker user = getById(id);
 		if(user!=null){
 			Hibernate.initialize(user.getWorkerProfiles());
@@ -31,7 +34,7 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 	}
 
 	@Override
-	public Worker findWorkerBySSO(String sso) {
+	public Worker findWorkerBySSO(String sso) throws DaoException {
 		logger.info("SSO : {}", sso);
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("ssoId", sso));
@@ -45,8 +48,12 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Worker> findAllWorkers() {
-		Criteria criteria = createEntityCriteria().addOrder(Order.asc("firstName"));
+	public List<Worker> findAllWorkers(int count, int setNumber, String sortingColumn, int sortingType) throws DaoException {
+		Criteria criteria = createEntityCriteria();
+		criteria = new CriteriaBuilder(criteria)
+				.addOrder(sortingColumn, sortingType)
+				.addCertainNumberRows(count, setNumber)
+				.getCriteria();
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		List<Worker> users = (List<Worker>) criteria.list();
 		for(Worker user : users){
@@ -57,17 +64,74 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public List<Worker> findAllWorkersBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType) throws DaoException {
+		Criteria criteria = createEntityCriteria();
+		criteria = new CriteriaBuilder(criteria)
+				.addOrder(sortingColumn, sortingType)
+				.addCertainNumberRows(count, setNumber)
+				.getCriteria();
+		criteria.add(Restrictions.eq("subdivision", subdivision));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Worker> users = (List<Worker>) criteria.list();
+		for(Worker user : users){
+			Hibernate.initialize(user.getWorkerProfiles());
+			Hibernate.initialize(user.getSubdivision());
+		}
+		return  users;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Worker> findAllWorkersByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) throws DaoException {
+		Criteria criteria = createEntityCriteria();
+		criteria = new CriteriaBuilder(criteria)
+				.addOrder(sortingColumn, sortingType)
+				.addCertainNumberRows(count, setNumber)
+				.getCriteria();
+		criteria.add(Restrictions.like("lastName", "%" + lastName + "%"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		List<Worker> users = (List<Worker>) criteria.list();
+		for(Worker user : users){
+			Hibernate.initialize(user.getWorkerProfiles());
+			Hibernate.initialize(user.getSubdivision());
+		}
+		return  users;
+	}
+
+	@Override
+	public long getCountWorkers() throws DaoException {
+		return UtilDAO.getRowCountInTable(createEntityCriteria());
+	}
+
+	@Override
+	public long getCountWorkers(Subdivision subdivision) throws DaoException {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("subdivision", subdivision));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return UtilDAO.getRowCountInTable(criteria);
+	}
+
+	@Override
+	public long getCountWorkers(String lastName) throws DaoException {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.like("lastName", "%" + lastName + "%"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return UtilDAO.getRowCountInTable(criteria);
+	}
+
+	@Override
 	public void addWorker(Worker worker) throws DaoException {
 		this.persist(worker);
 	}
 
     @Override
-    public void updateWorker(Worker worker) {
+    public void updateWorker(Worker worker) throws DaoException {
         update(worker);
     }
 
     @Override
-	public void deleteWorker(Worker worker) {
+	public void deleteWorker(Worker worker) throws DaoException {
 		delete(worker);
 	}
 

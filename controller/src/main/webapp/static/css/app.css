@@ -3,9 +3,10 @@ html{
 }
 
 body{
-	height: 100%;
+	height: auto;
+    padding-bottom: 20px;
 	background-color:rgb(245, 245, 245);
-	padding-top: 30px;
+	padding-top: 1px;
 }
 
 
@@ -14,8 +15,9 @@ body{
 }
 
 .floatRight{
-	float:right;
-	margin-right: 18px;
+    float: right;
+    margin-right: 18px;
+    margin-top: 12px;
 }
 
 .has-error{
@@ -25,7 +27,8 @@ body{
 
 .generic-container {
     position:relative;
-    min-width: 850px;
+    z-index: 1;
+    min-width: 950px;
     width:80%;
     padding: 20px;
     background-color: #f7f7f7;
@@ -75,6 +78,38 @@ body, #mainWrapper, .form-control{
 }
 
 .authbar{
-    margin-bottom: 10px;
+    min-width: 950px;
     height: 35px;
+    width: 80%;
+    margin: 10px auto 25px;
+    position: relative;
+    z-index: 1000;
+}
+
+.loggedinworker {
+    font-size: 13px;
+    margin-top: 11px;
+    color: midnightblue;
+}
+
+#itemsOnPage {
+    width: 100px;
+    float: right;
+}
+
+#l_subdivision {
+    width: 190px;
+    float: right;
+    margin-right: 10px;
+}
+
+#l_lastName {
+    width: 250px;
+    float: right;
+    margin-right: 10px;
+}
+
+#findLastName{
+    margin: 10px 0px 0px 0px;
+    max-width: 100%;
 }

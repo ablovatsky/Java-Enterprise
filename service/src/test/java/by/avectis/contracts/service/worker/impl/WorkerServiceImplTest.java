@@ -2,7 +2,8 @@ package by.avectis.contracts.service.worker.impl;
 
 
 import by.avectis.contracts.config.TestControllerConfiguration;
-import by.avectis.contracts.dto.worker.UtilDTO;
+import by.avectis.contracts.config.TestHibernateConfiguration;
+import by.avectis.contracts.dto.worker.WorkerDTO;
 import by.avectis.contracts.model.Profile;
 import by.avectis.contracts.model.ProfileType;
 import by.avectis.contracts.model.Subdivision;
@@ -29,13 +30,14 @@ import java.util.Set;
 
 @DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestControllerConfiguration.class)
+@ContextConfiguration(classes = TestHibernateConfiguration.class)
 @WebAppConfiguration
 @Transactional
 public class WorkerServiceImplTest {
 
+
     @Autowired
-    private UtilDTO workerDTO;
+    private WorkerDTO workerDTO;
 
     @Autowired
     private WorkerService workerService;
@@ -48,105 +50,53 @@ public class WorkerServiceImplTest {
 
     private Worker worker;
 
+
+
     @Test
     @Rollback(false)
     public void deleteUserBySSO(){
-        try {
-            workerService.deleteWorkerBySSO("workerTest");
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Test
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void isUserSSOUnique(){
-        try {
-            if (workerService.isWorkerSSOUnique("admin")){
-                System.out.println("SSO - уникальное");
-            } else {
-                System.out.println("SSO - неуникальное");
-            }
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Test
     @Rollback(false)
     public void saveUser(){
-        try {
-            worker = new Worker();
-            Set<Profile> workerProfiles = new HashSet<>();
-            workerProfiles.add(profileService.findByType(ProfileType.USER.getProfileType()));
-            Subdivision subdivision = subdivisionService.findByName("ОРПО");
-            worker.setFirstName("workerTest");
-            worker.setLastName("workerTest");
-            worker.setSsoId("workerTest");
-            worker.setPatronymic("workerTest");
-            worker.setPassword("workerTest");
-            worker.setWorkerProfiles(workerProfiles);
-            worker.setSubdivision(subdivision);
-            worker.setEmail("workerTest");
-            workerService.addWorker(worker);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Test
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void findBySSO(){
-        try {
-            worker = workerService.findWorkerBySSO("admin");
-            if (worker == null) {
-                System.out.println("Пользователь не найден");
-            } else {
-                System.out.println(worker.toString());
-            }
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Test
     @Rollback(false)
     public void updateUser(){
-        try {
-        worker = workerService.findWorkerBySSO("workerTest");
-        workerService.updateWorker(worker);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Test
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void findById(){
-        try {
-            worker = workerService.findWorkerById((long) 176);
-            if (worker == null) {
-                System.out.println("Пользователь не найден");
-            } else {
-                System.out.println(worker.toString());
-            }
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Test
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public void findAllUsers(){
-        System.out.println("Testing findAllWorkers()");
-        try {
-            List<Worker> workerList = workerService.findAllWorkers();
-            for (Worker worker : workerList) {
-                System.out.println(worker.toString());
-            }
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
+
+    }
+
+    @Test
+    public void getCountWorkers() throws Exception {
+
     }
 
 

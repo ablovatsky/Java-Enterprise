@@ -7,12 +7,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Registration Confirmation Page</title>
-	<link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"></link>
-	<link href="<c:url value='//static/css/app.css' />" rel="stylesheet"></link>
+	<link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
+	<link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
+
 </head>
 <body>
 	<div class="generic-container">
-		<%@include file="authheader.jsp" %>
+		<%@include file="header.jsp" %>
 		
 		<div class="alert alert-success lead">
 	    	${success}

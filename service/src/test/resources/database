@@ -1,0 +1,71 @@
+/*SUBDIVISION table*/
+CREATE TABLE SUBDIVISION (
+  id BIGINT NOT NULL IDENTITY ,
+  name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (name)
+);
+
+/*WORKER table*/
+create table WORKER (
+  id BIGINT NOT NULL IDENTITY ,
+  sso_id VARCHAR(30) NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  first_name VARCHAR(30) NOT NULL,
+  last_name  VARCHAR(30) NOT NULL,
+  patronymic VARCHAR(30) NOT NULL,
+  email VARCHAR(30) NOT NULL,
+  subdivision_id BIGINT NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (sso_id),
+  FOREIGN KEY (subdivision_id) REFERENCES SUBDIVISION (id)
+);
+   
+/* WORKER_PROFILE table contains all possible roles */
+create table PROFILE(
+  id BIGINT NOT NULL IDENTITY ,
+  type VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (type)
+);
+   
+/* JOIN TABLE for MANY-TO-MANY relationship*/  
+CREATE TABLE WORKER_TO_PROFILE (
+  worker_id BIGINT NOT NULL,
+  worker_profile_id BIGINT NOT NULL,
+  PRIMARY KEY (worker_id, worker_profile_id),
+  CONSTRAINT FK_USER FOREIGN KEY (worker_id) REFERENCES WORKER (id),
+  CONSTRAINT FK_PROFILE FOREIGN KEY (worker_profile_id) REFERENCES PROFILE (id)
+);
+  
+/* Populate USER_PROFILE Table */
+INSERT INTO PROFILE(type)
+VALUES ('USER');
+  
+INSERT INTO PROFILE(type)
+VALUES ('ADMIN');
+  
+INSERT INTO PROFILE(type)
+VALUES ('DBA');
+  
+  
+INSERT INTO SUBDIVISION(name)
+VALUES ('ОРПО');
+
+INSERT INTO WORKER(sso_id, password, first_name, last_name, patronymic, email, subdivision_id)
+VALUES ('admin','$2a$04$psdZWu3EpehkjnL0cERrhOFE8EtBIUh4apzAXVSv4j9EoA3HKENcS', 'Admin','Admin','admin','admin@admin.com', (SELECT id FROM subdivision WHERE name LIKE 'ОРПО'));
+
+
+/* Populate JOIN Table */
+INSERT INTO WORKER_TO_PROFILE (worker_id, worker_profile_id)
+  SELECT worker.id, profile.id FROM worker worker, profile profile
+  where worker.sso_id='admin' and profile.type='ADMIN';
+ 
+/* Create persistent_logins Table used to store rememberme related stuff*/
+CREATE TABLE persistent_logins (
+  workername VARCHAR(64) NOT NULL,
+  series VARCHAR(64) NOT NULL,
+  token VARCHAR(64) NOT NULL,
+  last_used TIMESTAMP NOT NULL,
+  PRIMARY KEY (series)
+);
