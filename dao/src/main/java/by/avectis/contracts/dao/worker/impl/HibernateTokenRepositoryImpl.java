@@ -28,7 +28,7 @@ public class HibernateTokenRepositoryImpl extends AbstractDAO<String, Persistent
 		persistentLogin.setSeries(token.getSeries());
 		persistentLogin.setToken(token.getTokenValue());
 		persistentLogin.setLast_used(token.getDate());
-		persist(persistentLogin);
+		persistEntity(persistentLogin);
 
 	}
 
@@ -56,7 +56,7 @@ public class HibernateTokenRepositoryImpl extends AbstractDAO<String, Persistent
 		PersistentLogin persistentLogin = (PersistentLogin) crit.uniqueResult();
 		if (persistentLogin != null) {
 			logger.info("rememberMe was selected");
-			delete(persistentLogin);
+			deleteEntity(persistentLogin);
 		}
 
 	}
@@ -67,7 +67,7 @@ public class HibernateTokenRepositoryImpl extends AbstractDAO<String, Persistent
 		PersistentLogin persistentLogin = getById(seriesId);
 		persistentLogin.setToken(tokenValue);
 		persistentLogin.setLast_used(lastUsed);
-		update(persistentLogin);
+		updateEntity(persistentLogin);
 	}
 
 }

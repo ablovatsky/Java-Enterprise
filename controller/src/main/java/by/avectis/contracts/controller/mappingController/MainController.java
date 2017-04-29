@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes("roles")
 public class MainController {
 
     @Autowired

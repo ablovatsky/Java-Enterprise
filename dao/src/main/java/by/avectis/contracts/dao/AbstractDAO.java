@@ -33,12 +33,12 @@ public abstract class AbstractDAO<PK extends Serializable, T> {
 	protected T getById(PK key){
 		try {
 			return (T) getSession().get(persistentClass, key);
-		} catch(HibernateException e) {
+		} catch(HibernateException | IllegalArgumentException e) {
 			throw new DaoException(e.toString(), e);
 		}
 	}
 
-	protected void persist(T entity){
+	protected void persistEntity(T entity){
         try {
             getSession().persist(entity);
         } catch(HibernateException e) {
@@ -46,7 +46,7 @@ public abstract class AbstractDAO<PK extends Serializable, T> {
         }
 	}
 
-	protected void update(T entity){
+	protected void updateEntity(T entity){
         try {
             getSession().update(entity);
         } catch(HibernateException e) {
@@ -54,7 +54,7 @@ public abstract class AbstractDAO<PK extends Serializable, T> {
         }
 	}
 
-	protected void delete(T entity){
+	protected void deleteEntity(T entity){
         try {
             getSession().delete(entity);
         } catch(HibernateException e) {

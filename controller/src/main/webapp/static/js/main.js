@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $.ajax({
         type: "GET",
-        url : "/contracts/loggedinworker",
+        url : "/avectis/loggedinworker",
         success: function(result){
             $('.loggedinworker').text(result);
         }

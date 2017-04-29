@@ -2,7 +2,6 @@ package by.avectis.contracts.dao.worker;
 
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Profile;
-
 import java.util.List;
 
 

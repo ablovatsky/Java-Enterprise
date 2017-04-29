@@ -8,6 +8,7 @@ class Subdivision {
 
 let urlName;
 let subdivisionId;
+let type;
 
 $(document).ready(function() {
     subdivisionId = $("#hdnSession").data('value');
@@ -15,14 +16,16 @@ $(document).ready(function() {
         $.ajax({
             type: "GET",
             contentType : 'application/json; charset=utf-8',
-            url : "/contracts/administration/get-edit-subdivision-" + subdivisionId,
+            url : "/avectis/administration/subdivisions/subdivision/" + subdivisionId,
             success: function(result){
-                urlName = "/contracts/administration/edit-subdivision";
+                urlName = "/avectis/administration/subdivisions/subdivision/edit";
+                type = "PUT";
                 fillEditSubdivision(result);
             }
          });
     } else {
-        urlName = "/contracts/administration/new-subdivision";
+        urlName = "/avectis/administration/subdivisions/subdivision/new";
+        type = "POST";
         subdivisionId = null;
         fillNewSubdivision();
     }
@@ -37,10 +40,10 @@ function fillNewSubdivision() {
 function fillEditSubdivision(data) {
     $('.btn').val("Изменить");
     $('.well').text("Редактирование данных подразделения");
-    $('#name').val(data.map.subdivision.map.name);
+    $('#name').val(data.name);
 }
 
-function saveWorker() {
+function addSubdivision() {
     const jName = checkEmptyInput("name");
     if (jName) {
         let subdivision = new Subdivision(subdivisionId, jName);
@@ -54,42 +57,35 @@ function send(jsonString, jName) {
     const header = $("meta[name='_csrf_header']").attr("content");
     $.ajax({
         url: urlName,
-        type: "POST",
+        type: type,
         contentType : 'application/json; charset=utf-8',
-        dataType : 'json',
         data: jsonString,
         beforeSend: function(request) {
             request.setRequestHeader(header, token);
         },
-        success: function(result){
-            let msgResult = result.map.state;
-            if (msgResult.localeCompare("ok") === 0) {
-                if ( subdivisionId === undefined || subdivisionId === null) {
-                    document.location.href = "/contracts/administration/subdivisions";
-                    alert("Подразделение " + jName + " добавлено успешно.");
+        success: function(result, textStatus, status){
+            if (status.status === 200) {
+                if (  jName === undefined || jName === null ){
+                    document.location.href = "/avectis/administration/subdivisions";
+                    alert("Подразделение <<" + jName + ">> добавлено успешно.");
                 } else {
-                    document.location.href = "/contracts/administration/subdivisions";
-                    alert("Данные подразделения " + jName + " изменены.");
-                }
-            } else {
-                if (msgResult.localeCompare("not unique") === 0) {
-                    $("#nameError").text("Подразделение " + jName + " уже зарегистрировано. Введите дрогое название подразделения.");
-                } else {
-                    if (msgResult.localeCompare("not found") === 0) {
-                        alert("Подразделение " + jName + "не зарегистрировано.");
-                        document.location.href = "/contracts/administration/subdivisions";
-                    } else {
-                        if (subdivisionId === null) {
-                            alert("Подразделение " + jName + " - ошибка добавления.");
-                        } else {
-                            alert("Подразделение " + jName + " - ошибка изменения данных.");
-                        }
-                    }
+                    document.location.href = "/avectis/administration/subdivisions";
+                    alert("Данные Подразделения <<" + jName + ">> изменены.");
                 }
             }
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            alert("some error");
+        error: function(error) {
+            if (error.status === 302) {
+                $("#ssoIdError").text("Подразделение <<" + jName + ">> уже зарегистрировано. Введите дрогое имя подразделения.");
+            } else {
+                if (error.status === 404) {
+                    alert("Подразделение <<" + jName + ">> не найдено.");
+                    document.location.href = "/avectis/administration/subdivisions";
+                } else {
+                    alert("Ошибка");
+                    document.location.href = "/avectis/administration/subdivisions";
+                }
+            }
         }
     });
 }

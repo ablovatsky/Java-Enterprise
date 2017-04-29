@@ -9,13 +9,13 @@ import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.dao.worker.WorkerDAO;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Repository("workerDao")
@@ -24,48 +24,49 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 	private static final Logger logger = LoggerFactory.getLogger(WorkerDAOImpl.class);
 
 	@Override
-	public Worker findWorkerById(Long id) throws DaoException {
-		Worker user = getById(id);
-		if(user!=null){
-			Hibernate.initialize(user.getWorkerProfiles());
-			Hibernate.initialize(user.getSubdivision());
+	public Worker findById(Long id) throws DaoException {
+		Worker worker = getById(id);
+		if(worker!=null){
+			Hibernate.initialize(worker.getWorkerProfiles());
+			Hibernate.initialize(worker.getSubdivision());
 		}
-		return user;
+		return worker;
 	}
 
 	@Override
-	public Worker findWorkerBySSO(String sso) throws DaoException {
-		logger.info("SSO : {}", sso);
+	public Worker findBySSOID(String ssoId) throws DaoException {
+		logger.info("findBySSOID : {}", ssoId);
 		Criteria criteria = createEntityCriteria();
-		criteria.add(Restrictions.eq("ssoId", sso));
-		Worker user = (Worker)criteria.uniqueResult();
-		if(user!=null){
-			Hibernate.initialize(user.getWorkerProfiles());
-			Hibernate.initialize(user.getSubdivision().getWorkerList());
+		criteria.add(Restrictions.eq("ssoId", ssoId));
+		Worker worker = (Worker)criteria.uniqueResult();
+		if(worker!=null){
+			Hibernate.initialize(worker.getWorkerProfiles());
+			Hibernate.initialize(worker.getSubdivision().getWorkerList());
+            logger.info("worker : {}", worker);
 		}
-		return user;
+		return worker;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Worker> findAllWorkers(int count, int setNumber, String sortingColumn, int sortingType) throws DaoException {
+	public Set<Worker> findAll(int count, int setNumber, String sortingColumn, int sortingType) {
 		Criteria criteria = createEntityCriteria();
 		criteria = new CriteriaBuilder(criteria)
 				.addOrder(sortingColumn, sortingType)
 				.addCertainNumberRows(count, setNumber)
 				.getCriteria();
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<Worker> users = (List<Worker>) criteria.list();
-		for(Worker user : users){
+		Set<Worker> workers = new LinkedHashSet<>((List<Worker>) criteria.list());
+		for(Worker user : workers){
 			Hibernate.initialize(user.getWorkerProfiles());
 			Hibernate.initialize(user.getSubdivision());
 		}
-		return  users;
+		return  workers;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Worker> findAllWorkersBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType) throws DaoException {
+	public Set<Worker> findAllBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType) {
 		Criteria criteria = createEntityCriteria();
 		criteria = new CriteriaBuilder(criteria)
 				.addOrder(sortingColumn, sortingType)
@@ -73,17 +74,17 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 				.getCriteria();
 		criteria.add(Restrictions.eq("subdivision", subdivision));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<Worker> users = (List<Worker>) criteria.list();
-		for(Worker user : users){
+        Set<Worker> workers = new LinkedHashSet<>((List<Worker>) criteria.list());
+		for(Worker user : workers){
 			Hibernate.initialize(user.getWorkerProfiles());
 			Hibernate.initialize(user.getSubdivision());
 		}
-		return  users;
+		return  workers;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Worker> findAllWorkersByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) throws DaoException {
+	public Set<Worker> findAllByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) {
 		Criteria criteria = createEntityCriteria();
 		criteria = new CriteriaBuilder(criteria)
 				.addOrder(sortingColumn, sortingType)
@@ -91,21 +92,21 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 				.getCriteria();
 		criteria.add(Restrictions.like("lastName", "%" + lastName + "%"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<Worker> users = (List<Worker>) criteria.list();
-		for(Worker user : users){
+        Set<Worker> workers = new LinkedHashSet<>((List<Worker>) criteria.list());
+		for(Worker user : workers){
 			Hibernate.initialize(user.getWorkerProfiles());
 			Hibernate.initialize(user.getSubdivision());
 		}
-		return  users;
+		return  workers;
 	}
 
 	@Override
-	public long getCountWorkers() throws DaoException {
+	public long getCountRows() throws DaoException {
 		return UtilDAO.getRowCountInTable(createEntityCriteria());
 	}
 
 	@Override
-	public long getCountWorkers(Subdivision subdivision) throws DaoException {
+	public long getCountRowsBySubdivisionId(Subdivision subdivision) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("subdivision", subdivision));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -113,7 +114,7 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 	}
 
 	@Override
-	public long getCountWorkers(String lastName) throws DaoException {
+	public long getCountRowsByLastName(String lastName) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.like("lastName", "%" + lastName + "%"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -121,18 +122,18 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 	}
 
 	@Override
-	public void addWorker(Worker worker) throws DaoException {
-		this.persist(worker);
+	public void add(Worker worker) throws DaoException {
+		persistEntity(worker);
 	}
 
     @Override
-    public void updateWorker(Worker worker) throws DaoException {
-        update(worker);
+    public void update(Worker worker) throws DaoException {
+        updateEntity(worker);
     }
 
     @Override
-	public void deleteWorker(Worker worker) throws DaoException {
-		delete(worker);
+	public void remove(Worker worker) throws DaoException {
+		deleteEntity(worker);
 	}
 
 }

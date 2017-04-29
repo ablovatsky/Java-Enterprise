@@ -35,14 +35,14 @@
 
         <div class="row">
             <div class="form-actions floatRight">
-                <input type="submit" id="btn" class="btn btn-primary btn-sm"/> или <a href="/contracts/administration/subdivisions">Отмена</a>
+                <input type="submit" id="btn" class="btn btn-primary btn-sm"/> или <a href="/avectis/administration/subdivisions">Отмена</a>
             </div>
         </div>
 </div>
 </body>
 <script>
     $('#btn').bind('click', function(){
-        saveWorker();
+        addSubdivision();
     });
 </script>
 </html>

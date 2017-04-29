@@ -9,7 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
-	<title>Список работников</title>
+	<title>Список договоров</title>
 	<link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
 	<link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
     <link href="<c:url value='//static/css/simplePagination.css' />" rel="stylesheet"/>
@@ -27,11 +27,11 @@
 	<div class="generic-container">
 
 		<div class="well">
-			<a href='/avectis/administration/workers/new'>Добавить нового работника</a>
+			<a href='/avectis/contracts/new'>Добавить новый договор</a>
 		</div>
 		<div class="panel panel-default">
 		  	<div class="panel-heading">
-                <span class="lead">Список работников </span>
+                <span class="lead">Список договоров </span>
                 <select size="1" id="itemsOnPage" class="form-control input-sm" >
                     <option>10</option>
                     <option>50</option>
@@ -39,7 +39,7 @@
                 </select>
                 <select size="1" id="l_subdivision" class="form-control input-sm" >
                 </select>
-                <input type="text" id="l_lastName" class="form-control input-sm" placeholder="Фамилия  работника" required/>
+                <input type="text" id="l_lastName" class="form-control input-sm" placeholder="Номер договора" required/>
             </div>
 			<table class="table table-hover">
 	    	</table>

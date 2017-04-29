@@ -3,20 +3,19 @@ package by.avectis.contracts.dao.subdivision;
 
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Subdivision;
-
-import java.util.List;
+import java.util.Set;
 
 public interface  SubdivisionDao  {
 
-    void addSubdivision(Subdivision subdivision) throws DaoException;
+    void add(Subdivision subdivision) throws DaoException;
 
-    void updateSubdivision(Subdivision subdivision) throws DaoException;
+    void update(Subdivision subdivision) throws DaoException;
 
-    void deleteSubdivision(Subdivision subdivision) throws DaoException;
+    void remove(Subdivision subdivision) throws DaoException;
 
-    List<Subdivision> findAllSubdivisions() throws DaoException;
+    Set<Subdivision> findAll();
 
-    Subdivision findSubdivisionByName(String name) throws DaoException;
+    Subdivision findByName(String name) ;
 
-    Subdivision findSubdivisionById(Long id) throws DaoException;
+    Subdivision findById(Long id) throws DaoException;
 }

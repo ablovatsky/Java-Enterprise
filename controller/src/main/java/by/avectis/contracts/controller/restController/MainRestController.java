@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @RestController
 @RequestMapping("/")
-@SessionAttributes("roles")
 public class MainRestController {
 
     @GetMapping(value = {"/loggedinworker" })

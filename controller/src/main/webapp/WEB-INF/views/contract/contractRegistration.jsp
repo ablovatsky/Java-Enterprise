@@ -9,7 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <title>Работник</title>
+    <title>Договор</title>
     <link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
     <link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />

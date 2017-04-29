@@ -22,7 +22,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/administration/")
-@SessionAttributes("roles")
 public class WorkerRestController {
 
 	@Autowired
@@ -37,37 +36,42 @@ public class WorkerRestController {
 
 	@GetMapping(value = { "/workers-{pageNumber}-{itemsOnPage}" })
 	public ResponseEntity<Set<ShortInfoWorker>> getWorkers(@PathVariable int pageNumber, @PathVariable int itemsOnPage) {
-		Set<ShortInfoWorker> workers = workerDTO.getWorkerList(itemsOnPage, pageNumber, "ssoId", 0);
+		Set<ShortInfoWorker> workers = workerDTO.getWorkerSet(itemsOnPage, pageNumber, "ssoId", 0);
 		MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-		multiValueMap.add("workerCount", String.valueOf(workerService.getCountWorkers()));
+		multiValueMap.add("workerCount", String.valueOf(workerService.getCountRows()));
 		return new ResponseEntity<>(workers, multiValueMap, HttpStatus.OK);
 	}
 
 	@GetMapping(value = { "/workers/subdivision/{subdivisionId}-{pageNumber}-{itemsOnPage}" })
 	public ResponseEntity<Set<ShortInfoWorker>> getWorkersBySubdivision(@PathVariable int subdivisionId, @PathVariable int pageNumber, @PathVariable int itemsOnPage) {
-		Set<ShortInfoWorker> workers = workerDTO.getWorkerListBySubdivision(subdivisionId,itemsOnPage, pageNumber, "ssoId", 0);
+		Set<ShortInfoWorker> workers = workerDTO.getWorkerSetBySubdivision(subdivisionId,itemsOnPage, pageNumber, "ssoId", 0);
 		MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-		multiValueMap.add("workerCount", String.valueOf(workerService.getCountWorkers(subdivisionId)));
+		multiValueMap.add("workerCount", String.valueOf(workerService.getCountRowsBySubdivisionId(subdivisionId)));
 		return new ResponseEntity<>(workers, multiValueMap, HttpStatus.OK);
 	}
 
 	@GetMapping(value = { "/workers/lastname/{lastName}-{pageNumber}-{itemsOnPage}" })
 	public ResponseEntity<Set<ShortInfoWorker>> getWorkersByLastName(@PathVariable String lastName, @PathVariable int pageNumber, @PathVariable int itemsOnPage) {
-		Set<ShortInfoWorker> workers = workerDTO.getWorkerListByLastName(lastName, itemsOnPage, pageNumber, "ssoId", 0);
+		Set<ShortInfoWorker> workers = workerDTO.getWorkerSetByLastName(lastName, itemsOnPage, pageNumber, "ssoId", 0);
 		MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-		multiValueMap.add("workerCount", String.valueOf(workerService.getCountWorkers(lastName)));
+		multiValueMap.add("workerCount", String.valueOf(workerService.getCountRowsByLastName(lastName)));
 		return new ResponseEntity<>(workers, multiValueMap, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = { "/workers/{ssoId}" })
 	public ResponseEntity deleteWorker(@PathVariable String ssoId) {
-		workerService.deleteWorkerBySSO(ssoId);
-		return new ResponseEntity(HttpStatus.OK);
+		try{
+			workerService.removeBySSOID(ssoId);
+			return new ResponseEntity(HttpStatus.OK);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.SEE_OTHER);
+		}
 	}
 
 	@GetMapping(value = "/workers/worker/{ssoId}")
 	public ResponseEntity<InfoWorker> getWorkerBySsoId(@PathVariable String ssoId) {
-		InfoWorker worker = workerDTO.getWorker(workerService.findWorkerBySSO(ssoId));
+		InfoWorker worker = workerDTO.getWorker(workerService.findBySSOID(ssoId));
 		return new ResponseEntity<>(worker, HttpStatus.OK);
 	}
 
@@ -79,11 +83,11 @@ public class WorkerRestController {
 	@PostMapping(value = {"/workers/worker/new"})
 	public ResponseEntity addWorker(@RequestBody Worker worker, BindingResult bindingResult){
 		if (!bindingResult.hasErrors()) {
-			if (!workerService.isWorkerSSOUnique(worker.getSsoId())) {
+			if (!workerService.isWorkerSSOIDUnique(worker.getSsoId())) {
 				return new ResponseEntity<>(HttpStatus.FOUND);
 			}
 			try {
-				workerService.addWorker(worker);
+				workerService.add(worker);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (ServiceException e) {
 				e.printStackTrace();
@@ -96,11 +100,11 @@ public class WorkerRestController {
 	@PutMapping(value = {"/workers/worker/edit"})
 	public ResponseEntity editWorker(@RequestBody Worker worker, BindingResult bindingResult){
 		if (!bindingResult.hasErrors()) {
-			if (workerService.isWorkerSSOUnique(worker.getSsoId())) {
+			if (workerService.isWorkerSSOIDUnique(worker.getSsoId())) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			try {
-				workerService.updateWorker(worker);
+				workerService.update(worker);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (ServiceException e) {
 				e.printStackTrace();

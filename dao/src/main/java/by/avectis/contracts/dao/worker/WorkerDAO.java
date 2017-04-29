@@ -3,33 +3,32 @@ package by.avectis.contracts.dao.worker;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.model.Worker;
-
-import java.util.List;
+import java.util.Set;
 
 
 public interface WorkerDAO {
 
-	Worker findWorkerById(Long id) throws DaoException;
+	Worker findById(Long id) throws DaoException;
 	
-	Worker findWorkerBySSO(String sso) throws DaoException;
+	Worker findBySSOID(String ssoId);
 	
-	void addWorker(Worker worker) throws DaoException;
+	void add(Worker worker) throws DaoException;
 
-	void updateWorker(Worker worker) throws DaoException;
+	void update(Worker worker) throws DaoException;
 	
-	void deleteWorker(Worker worker) throws DaoException;
+	void remove(Worker worker) throws DaoException;
 	
-	List<Worker> findAllWorkers(int count, int setNumber, String sortingColumn, int sortingType) throws DaoException;
+	Set<Worker> findAll(int count, int setNumber, String sortingColumn, int sortingType);
 
-	List<Worker> findAllWorkersBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType)  throws DaoException;
+	Set<Worker> findAllBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType);
 
-	List<Worker> findAllWorkersByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType)  throws DaoException;
+	Set<Worker> findAllByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType);
 
-	long getCountWorkers() throws DaoException;
+	long getCountRows();
 
-	long getCountWorkers(Subdivision subdivision) throws DaoException;
+	long getCountRowsBySubdivisionId(Subdivision subdivision);
 
-	long getCountWorkers(String lastName) throws DaoException;
+	long getCountRowsByLastName(String lastName);
 
 }
 

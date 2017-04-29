@@ -2,23 +2,22 @@ package by.avectis.contracts.service.subdivision;
 
 import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.service.exception.ServiceException;
-
-import java.util.List;
+import java.util.Set;
 
 
 public interface SubdivisionService {
 
-    void addSubdivision(Subdivision subdivision) throws ServiceException;
+    void add(Subdivision subdivision) throws ServiceException;
 
-    void updateSubdivision(Subdivision subdivision) throws ServiceException;
+    void update(Subdivision subdivision) throws ServiceException;
 
-    void deleteSubdivision(long id) throws ServiceException;
+    void remove(long id) throws ServiceException;
 
-    List<Subdivision> findAllSubdivisions() throws ServiceException;
+    Set<Subdivision> findAll();
 
-    Subdivision findSubdivisionByName(String name) throws ServiceException;
+    Subdivision findByName(String name) throws ServiceException;
 
-    Subdivision findSubdivisionById(Long id) throws ServiceException;
+    Subdivision findById(Long id) throws ServiceException;
 
     boolean isSubdivisionUnique(long id) throws ServiceException;
 

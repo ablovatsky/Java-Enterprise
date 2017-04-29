@@ -1,7 +1,7 @@
 let itemsOnPage = 10;
 let pageNumber = 1;
 let items = 1;
-let url = "/contracts/administration/workers-" + pageNumber + "-" + itemsOnPage;
+let url = "/avectis/administration/workers-" + pageNumber + "-" + itemsOnPage;
 $(document).ready(function() {
     getWorkers();
 });
@@ -104,7 +104,7 @@ function fillWorkerList(workers, subdivisions) {
         subdivisionTable += worker.subdivision;
         subdivisionTable += '</td>';
         subdivisionTable += '<td>';
-        subdivisionTable += "<a href='/contracts/administration/workers/"+worker.ssoId+"' class='btn btn-primary custom-width'>Редактировать</a>";
+        subdivisionTable += "<a href='/avectis/administration/workers/"+worker.ssoId+"' class='btn btn-primary custom-width'>Редактировать</a>";
         subdivisionTable += '</td>';
         subdivisionTable += '<td>';
         subdivisionTable += "<input type=\"submit\" class=\"btn del btn-danger custom-width\" id=\""+ worker.ssoId +"\" value=\"Удалить\" onClick = \"deleteWorker(this.id)\">";
@@ -121,17 +121,17 @@ function fillWorkerList(workers, subdivisions) {
 }
 
 function reloadWorkers() {
-    url = "/contracts/administration/workers-" + pageNumber + "-" + itemsOnPage;
+    url = "/avectis/administration/workers-" + pageNumber + "-" + itemsOnPage;
     getWorkers();
 }
 
 function getWorkersBySubdivisionId(subdivisionId) {
-    url = "/contracts/administration//workers/subdivision/" + subdivisionId + "-" + pageNumber + "-" + itemsOnPage;
+    url = "/avectis/administration//workers/subdivision/" + subdivisionId + "-" + pageNumber + "-" + itemsOnPage;
     getWorkers();
 }
 
 function getWorkersByLastName(lastName) {
-    url = "/contracts/administration//workers/lastname/" + lastName + "-" + pageNumber + "-" + itemsOnPage;
+    url = "/avectis/administration//workers/lastname/" + lastName + "-" + pageNumber + "-" + itemsOnPage;
     getWorkers();
 }
 
@@ -140,7 +140,7 @@ function deleteWorker(ssoId) {
     const header = $("meta[name='_csrf_header']").attr("content");
     $.ajax({
         type: "DELETE",
-        url : "/contracts/administration/workers/" + ssoId ,
+        url : "/avectis/administration/workers/" + ssoId ,
         beforeSend: function(request) {
             request.setRequestHeader(header, token);
         },
@@ -171,7 +171,7 @@ function getWorkers() {
 function getSubdivisions(workers) {
     $.ajax({
         type: "GET",
-        url : "/contracts/administration/subdivisionLists" ,
+        url : "/avectis/administration/subdivisionLists" ,
         success: function(subdivisions) {
             fillWorkerList(workers, subdivisions);
         }

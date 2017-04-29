@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="controller:war exploded">
-    <output-path>$PROJECT_DIR$/controller/target/contracts</output-path>
+    <output-path>$PROJECT_DIR$/controller/target/avectis</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -133,7 +133,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/controller/target/contracts/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/controller/target/avectis/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="controller/web/Web" />
     </root>

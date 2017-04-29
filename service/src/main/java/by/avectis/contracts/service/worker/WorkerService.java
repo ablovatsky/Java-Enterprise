@@ -5,33 +5,34 @@ import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.service.exception.ServiceException;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface WorkerService {
 	
-	Worker findWorkerById(Long id) throws ServiceException;
+	Worker findById(Long id) throws ServiceException;
 	
-	Worker findWorkerBySSO(String sso) throws ServiceException;
+	Worker findBySSOID(String ssoId);
 	
-	void addWorker(Worker worker) throws ServiceException;
+	void add(Worker worker) throws ServiceException;
 	
-	void updateWorker(Worker worker) throws ServiceException;
+	void update(Worker worker) throws ServiceException;
 	
-	void deleteWorkerBySSO(String sso) throws ServiceException;
+	void removeBySSOID(String sso);
 
-	List<Worker> findAllWorkers(int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException;
+	Set<Worker> findAll(int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException;
 
-	List<Worker> findAllWorkersBySubdivisionId(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException;
+	Set<Worker> findAllBySubdivisionId(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException;
 
-    List<Worker> findAllWorkersByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType)  throws ServiceException;
+	Set<Worker> findAllByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType)  throws ServiceException;
 
 
-    boolean isWorkerSSOUnique(String sso) throws ServiceException;
+    boolean isWorkerSSOIDUnique(String ssoId);
 
-	long getCountWorkers() throws ServiceException;
+	long getCountRows() throws ServiceException;
 
-    long getCountWorkers(long subdivisionId) throws ServiceException;
+    long getCountRowsBySubdivisionId(long subdivisionId) throws ServiceException;
 
-    long getCountWorkers(String lastName) throws ServiceException;
+    long getCountRowsByLastName(String lastName) throws ServiceException;
 
 }

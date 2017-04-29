@@ -25,17 +25,17 @@ $(document).ready(function() {
     if (ssoId.localeCompare("newWorker")) {
         $.ajax({
             type: "GET",
-            url : "/contracts/administration/workers/worker/" + ssoId,
+            url : "/avectis/administration/workers/worker/" + ssoId,
             success: function(worker){
                 type = "PUT";
-                urlName = "/contracts/administration/workers/worker/edit";
+                urlName = "/avectis/administration/workers/worker/edit";
                 getSubdivisions(worker);
             }
         });
     } else {
         getSubdivisions();
         type = "POST";
-        urlName = "/contracts/administration/workers/worker/new";
+        urlName = "/avectis/administration/workers/worker/new";
     }
 });
 
@@ -130,10 +130,10 @@ function send(jsonString, jSsoId) {
         success: function(result, textStatus, status){
             if (status.status === 200) {
                 if (  workerId === undefined || workerId === null ){
-                    document.location.href = "/contracts/administration/workers";
+                    document.location.href = "/avectis/administration/workers";
                     alert("Работник <<" + jSsoId + ">> добавлен успешно.");
                 } else {
-                    document.location.href = "/contracts/administration/workers";
+                    document.location.href = "/avectis/administration/workers";
                     alert("Данные работника <<" + jSsoId + ">> изменены.");
                 }
             }
@@ -144,10 +144,10 @@ function send(jsonString, jSsoId) {
             } else {
                 if (error.status === 404) {
                     alert("Работник <<" + jSsoId + ">> не найден.");
-                    document.location.href = "/contracts/administration/workers";
+                    document.location.href = "/avectis/administration/workers";
                 } else {
                     alert("Ошибка");
-                    document.location.href = "/contracts/administration/workers";
+                    document.location.href = "/avectis/administration/workers";
                 }
             }
         }
@@ -182,7 +182,7 @@ function checkSelect(id) {
 function getSubdivisions(worker) {
     $.ajax({
         type: "GET",
-        url : "/contracts/administration/subdivisionLists" ,
+        url : "/avectis/administration/subdivisionLists" ,
         success: function(subdivisions) {
             getProfiles(worker, subdivisions)
         }
@@ -192,7 +192,7 @@ function getSubdivisions(worker) {
 function getProfiles(worker, subdivisions) {
     $.ajax({
         type: "GET",
-        url : "/contracts/administration/profiles" ,
+        url : "/avectis/administration/profiles" ,
         success: function(profiles) {
             if ($.isEmptyObject(worker)) {
                 fillNewWorker(subdivisions, profiles);

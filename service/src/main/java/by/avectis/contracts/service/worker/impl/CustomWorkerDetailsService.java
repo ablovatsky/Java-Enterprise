@@ -32,9 +32,9 @@ public class CustomWorkerDetailsService implements UserDetailsService{
 	
 	@Transactional(readOnly=true)
 	public UserDetails loadUserByUsername(String ssoId) throws UsernameNotFoundException {
-		Worker user = workerService.findWorkerBySSO(ssoId);
+		Worker user = workerService.findBySSOID(ssoId);
 		logger.info("Worker : {}", user);
-		if(user==null){
+		if(user == null){
 			logger.info("Worker not found");
 			throw new UsernameNotFoundException("Workername not found");
 		}

@@ -71,6 +71,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>contracts</finalName>
+        <finalName>avectis</finalName>
     </build>
 </project>

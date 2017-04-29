@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -18,18 +17,10 @@ public class SubdivisionDTO {
     @Autowired
     private SubdivisionService subdivisionService;
 
-    private ShortInfoSubdivision subdivision;
-
     private Set<ShortInfoSubdivision> subdivisionList;
 
     public ShortInfoSubdivision getSubdivision(Subdivision subdivision) {
-        this.subdivision = new ShortInfoSubdivision(subdivision);
-        return this.subdivision;
-    }
-
-    public JSONObject getSubdivisionToJson(Subdivision subdivision) {
-        this.subdivision = new ShortInfoSubdivision(subdivision);
-        return new JSONObject(new Gson().toJson(this.subdivision));
+        return new ShortInfoSubdivision(subdivision);
     }
 
     public Set<ShortInfoSubdivision> getSubdivisionSet() {
@@ -37,16 +28,9 @@ public class SubdivisionDTO {
         return subdivisionList;
     }
 
-    public JSONObject getSubdivisionListToJson() {
-        setSubdivisionList();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("subdivisionList", subdivisionList);
-        return jsonObject ;
-    }
-
     private void setSubdivisionList() {
         subdivisionList = new LinkedHashSet<>();
-        List<Subdivision> subdivisionList = subdivisionService.findAllSubdivisions();
+        Set<Subdivision> subdivisionList = subdivisionService.findAll();
         subdivisionList.forEach( subdivision -> this.subdivisionList.add(new ShortInfoSubdivision(subdivision)) );
     }
 

@@ -7,6 +7,8 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>Список подразделений</title>
     <link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
     <link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
@@ -23,7 +25,7 @@
 <div class="generic-container">
 
     <div class="well">
-        <a href='/contracts/administration/new-subdivision'>Добавить новое подразделение</a>
+        <a href='/avectis/administration/subdivisions/new'>Добавить новое подразделение</a>
     </div>
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Список подразделений </span></div>

@@ -8,8 +8,7 @@ import by.avectis.contracts.service.subdivision.SubdivisionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import java.util.Set;
 
 @Service("subdivisionService")
 @Transactional
@@ -19,61 +18,53 @@ public class SubdivisionServiceImpl implements SubdivisionService {
     private SubdivisionDao dao;
 
     @Override
-    public void addSubdivision(Subdivision subdivision) throws ServiceException {
+    public void add(Subdivision subdivision) throws ServiceException {
         try {
-            dao.addSubdivision(subdivision);
-        } catch (ServiceException e) {
+            dao.add(subdivision);
+        } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
     }
 
     @Override
-    public void updateSubdivision(Subdivision subdivision) throws ServiceException {
+    public void update(Subdivision subdivision) throws ServiceException {
         try {
-            Subdivision entity = dao.findSubdivisionById(subdivision.getId());
+            Subdivision entity = dao.findById(subdivision.getId());
             if (entity != null) {
                 entity.setName(subdivision.getName());
             }
-        } catch (ServiceException e) {
+        } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
     }
 
     @Override
-    public void deleteSubdivision(long id) throws ServiceException {
+    public void remove(long id) throws ServiceException {
         try {
-            Subdivision subdivision = dao.findSubdivisionById(id);
+            Subdivision subdivision = dao.findById(id);
             if (subdivision != null) {
-                dao.deleteSubdivision(subdivision);
+                dao.remove(subdivision);
             }
-        } catch (ServiceException e) {
+        } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
     }
 
     @Override
-    public List<Subdivision> findAllSubdivisions() throws ServiceException {
-        try {
-            return dao.findAllSubdivisions();
-        } catch (ServiceException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+    public Set<Subdivision> findAll() throws ServiceException {
+        return dao.findAll();
     }
 
     @Override
-    public Subdivision findSubdivisionByName(String name) throws ServiceException {
-        try {
-            return dao.findSubdivisionByName(name);
-        } catch (ServiceException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+    public Subdivision findByName(String name) throws ServiceException {
+        return dao.findByName(name);
     }
 
     @Override
-    public Subdivision findSubdivisionById(Long id) throws ServiceException {
+    public Subdivision findById(Long id) throws ServiceException {
         try {
-            return dao.findSubdivisionById(id);
-        } catch (ServiceException e) {
+            return dao.findById(id);
+        } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
     }
@@ -81,7 +72,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
     @Override
     public boolean isSubdivisionUnique(long id) {
         try {
-            Subdivision subdivision = findSubdivisionById(id);
+            Subdivision subdivision = findById(id);
             return  subdivision == null;
         } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
@@ -89,12 +80,8 @@ public class SubdivisionServiceImpl implements SubdivisionService {
     }
 
     @Override
-    public boolean isSubdivisionUnique(String name) throws ServiceException {
-        try {
-            Subdivision subdivision = findSubdivisionByName(name);
-            return  subdivision == null;
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+    public boolean isSubdivisionUnique(String name) {
+        Subdivision subdivision = findByName(name);
+        return  subdivision == null;
     }
 }

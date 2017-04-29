@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import java.util.Set;
 
 @Service("workerService")
 @Transactional
@@ -28,37 +27,33 @@ public class WorkerServiceImpl implements WorkerService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-	public Worker findWorkerById(Long id) {
+	public Worker findById(Long id) {
         try {
-		    return workerDAO.findWorkerById(id);
+		    return workerDAO.findById(id);
         } catch (DaoException e) {
             throw new ServiceException(e.toString(), e);
         }
 	}
 
     @Override
-	public Worker findWorkerBySSO(String sso) {
-        try {
-		    return workerDAO.findWorkerBySSO(sso);
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+	public Worker findBySSOID(String ssoId) {
+        return workerDAO.findBySSOID(ssoId);
 	}
 
     @Override
-	public void addWorker(Worker worker) {
+	public void add(Worker worker) {
 		worker.setPassword(passwordEncoder.encode(worker.getPassword()));
 		try {
-			workerDAO.addWorker(worker);
+			workerDAO.add(worker);
 		} catch (DaoException e) {
 			throw new ServiceException(e.toString(), e);
 		}
 	}
 
-    @Override
-	public void updateWorker(Worker worker) {
+    @Override()
+	public void update(Worker worker) {
         try {
-            Worker entity = workerDAO.findWorkerById(worker.getId());
+            Worker entity = workerDAO.findById(worker.getId());
             if (entity != null) {
                 entity.setSsoId(worker.getSsoId());
                 if (!worker.getPassword().equals(entity.getPassword())) {
@@ -66,6 +61,7 @@ public class WorkerServiceImpl implements WorkerService {
                 }
                 entity.setFirstName(worker.getFirstName());
                 entity.setLastName(worker.getLastName());
+                entity.setPatronymic(worker.getPatronymic());
                 entity.setEmail(worker.getEmail());
                 entity.setWorkerProfiles(worker.getWorkerProfiles());
                 entity.setSubdivision(worker.getSubdivision());
@@ -76,87 +72,55 @@ public class WorkerServiceImpl implements WorkerService {
 	}
 
     @Override
-	public void deleteWorkerBySSO(String sso) {
-        try {
-            Worker worker = workerDAO.findWorkerBySSO(sso);
-            if (worker != null) {
-                workerDAO.deleteWorker(worker);
-            }
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
+	public void removeBySSOID(String ssoId) {
+        Worker worker = workerDAO.findBySSOID(ssoId);
+        if (worker != null) {
+            workerDAO.remove(worker);
         }
 	}
 
     @Override
-	public List<Worker> findAllWorkers(int count, int setNumber, String sortingColumn, int sortingType) {
-        try {
-            return workerDAO.findAllWorkers(count, setNumber, sortingColumn, sortingType);
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+	public Set<Worker> findAll(int count, int setNumber, String sortingColumn, int sortingType) {
+         return workerDAO.findAll(count, setNumber, sortingColumn, sortingType);
 	}
 
     @Override
-    public List<Worker> findAllWorkersBySubdivisionId(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException {
-        try {
-            Subdivision subdivision = subdivisionDao.findSubdivisionById(subdivisionId);
-            if (subdivision != null) {
-                return workerDAO.findAllWorkersBySubdivisionId(subdivision, count, setNumber, sortingColumn, sortingType);
-            }
-            return null;
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
+    public Set<Worker> findAllBySubdivisionId(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) {
+        Subdivision subdivision = subdivisionDao.findById(subdivisionId);
+        if (subdivision != null) {
+            return workerDAO.findAllBySubdivisionId(subdivision, count, setNumber, sortingColumn, sortingType);
         }
+        return null;
     }
 
     @Override
-    public List<Worker> findAllWorkersByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException {
-        try {
-            return workerDAO.findAllWorkersByLastName(lastName, count, setNumber, sortingColumn, sortingType);
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+    public Set<Worker> findAllByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) {
+        return workerDAO.findAllByLastName(lastName, count, setNumber, sortingColumn, sortingType);
     }
 
     @Override
-	public boolean isWorkerSSOUnique(String sso) {
-        try {
-            Worker user = findWorkerBySSO(sso);
-            return  user == null;
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+	public boolean isWorkerSSOIDUnique(String ssoId) {
+        Worker user = findBySSOID(ssoId);
+        return  user == null;
 	}
 
     @Override
-    public long getCountWorkers() throws ServiceException {
-        try {
-            return workerDAO.getCountWorkers();
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+    public long getCountRows() {
+        return workerDAO.getCountRows();
     }
 
     @Override
-    public long getCountWorkers(long subdivisionId) throws ServiceException {
-        try {
-            Subdivision subdivision = subdivisionDao.findSubdivisionById(subdivisionId);
-            if (subdivision != null) {
-                return workerDAO.getCountWorkers(subdivision);
-            }
-            return 0;
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
+    public long getCountRowsBySubdivisionId(long subdivisionId) {
+        Subdivision subdivision = subdivisionDao.findById(subdivisionId);
+        if (subdivision != null) {
+            return workerDAO.getCountRowsBySubdivisionId(subdivision);
         }
+        return 0;
     }
 
     @Override
-    public long getCountWorkers(String lastName) throws ServiceException {
-        try {
-            return workerDAO.getCountWorkers(lastName);
-        } catch (DaoException e) {
-            throw new ServiceException(e.toString(), e);
-        }
+    public long getCountRowsByLastName(String lastName) {
+        return workerDAO.getCountRowsByLastName(lastName);
     }
 
 }
