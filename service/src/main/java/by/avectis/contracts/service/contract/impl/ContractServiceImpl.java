@@ -5,11 +5,11 @@ import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Contract;
 import by.avectis.contracts.model.ContractState;
 import by.avectis.contracts.service.contract.ContractService;
+import by.avectis.contracts.service.contract.ContractStateService;
 import by.avectis.contracts.service.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Set;
 
 @Service("ContractService")
@@ -18,6 +18,9 @@ public class ContractServiceImpl implements ContractService {
 
     @Autowired
     private ContractDAO contractDAO;
+
+    @Autowired
+    private ContractStateService contractStateService;
 
     @Override
     public void add(Contract contract) throws ServiceException {
@@ -43,7 +46,7 @@ public class ContractServiceImpl implements ContractService {
                 entity.setCost(contract.getCost());
                 entity.setPlannedSurcharge(contract.getPlannedSurcharge());
                 entity.setPlannedProfit(contract.getPlannedProfit());
-                entity.setContractsState(contract.getContractsState());
+                entity.setContractState(contract.getContractState());
                 entity.setCommentFirst(contract.getCommentFirst());
                 entity.setCommentSecond(contract.getCommentSecond());
             }
@@ -82,6 +85,11 @@ public class ContractServiceImpl implements ContractService {
 }
 
     @Override
+    public Contract findByNumber(String number) {
+        return contractDAO.findByNumber(number);
+    }
+
+    @Override
     public Contract findByAxCode(String axCode) {
         return contractDAO.findByAxCode(axCode);
     }
@@ -89,6 +97,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public Set<Contract> findAll(int count, int setNumber, String sortingColumn, int sortingType) {
         return contractDAO.findAll(count, setNumber, sortingColumn, sortingType);
+    }
+
+    @Override
+    public Set<Contract> findAllByNumber(String number, int count, int setNumber, String sortingColumn, int sortingType) {
+        return contractDAO.findAllByNumber(number, count, setNumber, sortingColumn, sortingType);
     }
 
     @Override
@@ -102,8 +115,14 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public Set<Contract> findAllByState(ContractState contractState, int count, int setNumber, String sortingColumn, int sortingType) {
-        return contractDAO.findAllByState(contractState, count, setNumber, sortingColumn, sortingType);
+    public Set<Contract> findAllByState(int stateId, int count, int setNumber, String sortingColumn, int sortingType) {
+        try {
+            ContractState contractState = contractStateService.findById(stateId);
+            return contractDAO.findAllByState(contractState, count, setNumber, sortingColumn, sortingType);
+        } catch (DaoException e) {
+            e.printStackTrace();
+            throw new ServiceException(e.toString(), e);
+        }
     }
 
     @Override
@@ -124,5 +143,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public long getCountRowsByState(ContractState contractState) {
         return contractDAO.getCountRowsByState(contractState);
+    }
+
+    @Override
+    public boolean isContractNumberUnique(String number) {
+        Contract contract = contractDAO.findByNumber(number);
+        return contract == null;
     }
 }

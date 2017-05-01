@@ -1,13 +1,10 @@
 package by.avectis.contracts.dto.worker;
 
-import by.avectis.contracts.dto.worker.modelDTO.InfoWorker;
 import by.avectis.contracts.dto.worker.modelDTO.ShortInfoWorker;
 import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.service.worker.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,13 +15,6 @@ public class WorkerDTO{
     private WorkerService workerService;
 
     private Set<ShortInfoWorker> workerSet;
-
-    /*
-    * Get WORKER DTO object
-    */
-    public InfoWorker getWorker(Worker worker) {
-        return new InfoWorker(worker);
-    }
 
     /*
     * Get WORKERs list DTO objects

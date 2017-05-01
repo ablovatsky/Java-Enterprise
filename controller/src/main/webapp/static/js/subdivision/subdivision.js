@@ -90,14 +90,3 @@ function send(jsonString, jName) {
     });
 }
 
-function checkEmptyInput(id) {
-    const value = $("#" + id).val().replace(/^\s*/, '').replace(/\s*$/, '');
-    $("#" + id).val(value);
-    if ($.isEmptyObject(value)) {
-        $("#" + id + "Error").text("Данное поле обязательно для заполнения!");
-        return false;
-    } else {
-        $("#" + id + "Error").text("");
-        return value;
-    }
-}

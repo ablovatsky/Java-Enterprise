@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,23 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
 
     @Override
     public Contract findById(long id) throws DaoException {
-        return getById(id);
+        Contract contract =  getById(id);
+        if (contract != null) {
+            Hibernate.initialize(contract.getContractState());
+        }
+        return contract;
+    }
+
+    @Override
+    public Contract findByNumber(String number) {
+        logger.info("findByNumber : {}", number);
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("number", number));
+        Contract contract =  (Contract)criteria.uniqueResult();
+        if (contract != null) {
+            Hibernate.initialize(contract.getContractState());
+        }
+        return contract;
     }
 
     @Override
@@ -48,8 +65,11 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
         logger.info("findByName : {}", name);
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("name", name));
-        return (Contract)criteria.uniqueResult();
-
+        Contract contract =  (Contract)criteria.uniqueResult();
+        if (contract != null) {
+            Hibernate.initialize(contract.getContractState());
+        }
+        return contract;
     }
 
     @Override
@@ -57,7 +77,11 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
         logger.info("findByAxCode : {}", axCode);
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("axCode", axCode));
-        return (Contract)criteria.uniqueResult();
+        Contract contract =  (Contract)criteria.uniqueResult();
+        if (contract != null) {
+            Hibernate.initialize(contract.getContractState());
+        }
+        return contract;
     }
 
     @Override
@@ -70,7 +94,25 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
                 .addCertainNumberRows(count, setNumber)
                 .getCriteria();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return new LinkedHashSet<>((List<Contract>) criteria.list());
+        HashSet<Contract> contracts = new LinkedHashSet<>((List<Contract>) criteria.list());
+        contracts.forEach(contract -> Hibernate.initialize(contract.getContractState()));
+        return contracts;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Set<Contract> findAllByNumber(String number, int count, int setNumber, String sortingColumn, int sortingType) {
+        logger.info("findAllByNumber : {}");
+        Criteria criteria = createEntityCriteria();
+        criteria = new CriteriaBuilder(criteria)
+                .addOrder(sortingColumn, sortingType)
+                .addCertainNumberRows(count, setNumber)
+                .getCriteria();
+        criteria.add(Restrictions.like("number", number));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        HashSet<Contract> contracts = new LinkedHashSet<>((List<Contract>) criteria.list());
+        contracts.forEach(contract -> Hibernate.initialize(contract.getContractState()));
+        return contracts;
     }
 
     @Override
@@ -84,7 +126,9 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
                 .getCriteria();
         criteria.add(Restrictions.like("name", name));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return new LinkedHashSet<>((List<Contract>) criteria.list());
+        HashSet<Contract> contracts = new LinkedHashSet<>((List<Contract>) criteria.list());
+        contracts.forEach(contract -> Hibernate.initialize(contract.getContractState()));
+        return contracts;
     }
 
     @Override
@@ -98,7 +142,9 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
                 .getCriteria();
         criteria.add(Restrictions.like("axCode", axCode));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return new LinkedHashSet<>((List<Contract>) criteria.list());
+        HashSet<Contract> contracts = new LinkedHashSet<>((List<Contract>) criteria.list());
+        contracts.forEach(contract -> Hibernate.initialize(contract.getContractState()));
+        return contracts;
     }
 
     @Override
@@ -110,9 +156,11 @@ public class ContractDAOImpl extends AbstractDAO<Long, Contract> implements Cont
                 .addOrder(sortingColumn, sortingType)
                 .addCertainNumberRows(count, setNumber)
                 .getCriteria();
-        criteria.add(Restrictions.eq("state", contractState));
+        criteria.add(Restrictions.eq("contractState", contractState));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return new LinkedHashSet<>((List<Contract>) criteria.list());
+        HashSet<Contract> contracts = new LinkedHashSet<>((List<Contract>) criteria.list());
+        contracts.forEach(contract -> Hibernate.initialize(contract.getContractState()));
+        return contracts;
     }
 
     @Override

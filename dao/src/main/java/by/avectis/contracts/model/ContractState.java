@@ -15,7 +15,8 @@ public class ContractState {
     @Column(name = "type")
     private String type;
 
-    @OneToMany(mappedBy = "contractsState")
+    @Transient
+    @OneToMany(mappedBy = "contractState")
     private Set<Contract> contractsList = new HashSet<>();
 
     public Long getId() {
@@ -46,11 +47,8 @@ public class ContractState {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ContractState that = (ContractState) o;
-
-        if (!id.equals(that.id)) return false;
-        return type.equals(that.type);
+        return id.equals(that.id) && type.equals(that.type);
     }
 
     @Override

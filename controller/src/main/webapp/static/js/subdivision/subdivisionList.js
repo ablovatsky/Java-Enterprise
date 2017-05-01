@@ -13,30 +13,30 @@ function getSubdivisions() {
 }
 
 function fillSubdivisionList(subdivisions) {
-    var subdivisionTable = "";
-    subdivisionTable = '<thead>';
-    subdivisionTable += '<tr>';
-    subdivisionTable += '<th>Название</th>';
-    subdivisionTable += '<th width="150"></th>';
-    subdivisionTable += '<th width="150"></th>';
-    subdivisionTable += '</tr>';
-    subdivisionTable += '</thead>';
+    var table = "";
+    table = '<thead>';
+    table += '<tr>';
+    table += '<th>Название</th>';
+    table += '<th width="150"></th>';
+    table += '<th width="150"></th>';
+    table += '</tr>';
+    table += '</thead>';
     subdivisions.forEach( function (subdivision) {
-        subdivisionTable += '<tr>';
-        subdivisionTable += "<td>";
-        subdivisionTable += subdivision.name;
-        subdivisionTable += '</td>';
-        subdivisionTable += '<td>';
-        subdivisionTable += "<a href='/avectis/administration//subdivisions/"+subdivision.id+"' class='btn btn-primary custom-width'>Редактировать</a>";
-        subdivisionTable += '</td>';
-        subdivisionTable += '<td>';
-        subdivisionTable += "<input type=\"submit\" class=\"btn del btn-danger custom-width\" id=\""+ subdivision.id +"\" value=\"Удалить\" onClick = \"deleteSubdivision(this.id)\">";
-        subdivisionTable += '</td>';
-        subdivisionTable += '</tr>';
+        table += '<tr>';
+        table += "<td>";
+        table += subdivision.name;
+        table += '</td>';
+        table += '<td>';
+        table += "<a href='/avectis/administration//subdivisions/"+subdivision.id+"' class='btn btn-primary custom-width'>Редактировать</a>";
+        table += '</td>';
+        table += '<td>';
+        table += "<input type=\"submit\" class=\"btn del btn-danger custom-width\" id=\""+ subdivision.id +"\" value=\"Удалить\" onClick = \"deleteSubdivision(this.id)\">";
+        table += '</td>';
+        table += '</tr>';
     });
     $(".table thead").remove();
     $(".table tbody").remove();
-    $('.table').append(subdivisionTable);
+    $('.table').append(table);
 }
 
 function deleteSubdivision(id) {

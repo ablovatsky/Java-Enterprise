@@ -20,9 +20,13 @@ public class Subdivision implements Serializable{
     @Column(name = "NAME", unique = true, nullable=false)
     private String name ;
 
-
+    @Transient
     @OneToMany(mappedBy = "subdivision")
     private Set<Worker> workerList = new HashSet<>();
+
+    @Transient
+    @OneToMany(mappedBy = "subdivision")
+    private Set<LaborIntensity> laborIntensitySet = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -42,6 +46,14 @@ public class Subdivision implements Serializable{
 
     public Set<Worker> getWorkerList() {
         return workerList;
+    }
+
+    public Set<LaborIntensity> getLaborIntensitySet() {
+        return laborIntensitySet;
+    }
+
+    public void setLaborIntensitySet(Set<LaborIntensity> laborIntensitySet) {
+        this.laborIntensitySet = laborIntensitySet;
     }
 
     public void setWorkerList(Set<Worker> workerList) {

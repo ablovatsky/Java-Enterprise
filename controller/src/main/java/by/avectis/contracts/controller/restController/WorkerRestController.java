@@ -1,7 +1,6 @@
 package by.avectis.contracts.controller.restController;
 
 import by.avectis.contracts.dto.worker.WorkerDTO;
-import by.avectis.contracts.dto.worker.modelDTO.InfoWorker;
 import by.avectis.contracts.dto.worker.modelDTO.ShortInfoWorker;
 import by.avectis.contracts.model.Profile;
 import by.avectis.contracts.model.Worker;
@@ -70,8 +69,8 @@ public class WorkerRestController {
 	}
 
 	@GetMapping(value = "/workers/worker/{ssoId}")
-	public ResponseEntity<InfoWorker> getWorkerBySsoId(@PathVariable String ssoId) {
-		InfoWorker worker = workerDTO.getWorker(workerService.findBySSOID(ssoId));
+	public ResponseEntity<Worker> getWorkerBySsoId(@PathVariable String ssoId) {
+		Worker worker = workerService.findBySSOID(ssoId);
 		return new ResponseEntity<>(worker, HttpStatus.OK);
 	}
 

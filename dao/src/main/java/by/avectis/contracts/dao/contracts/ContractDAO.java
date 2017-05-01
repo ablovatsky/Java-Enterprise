@@ -18,11 +18,15 @@ public interface ContractDAO {
 
     Contract findById(long id) throws DaoException;
 
+    Contract findByNumber(String number);
+
     Contract findByName(String name);
 
     Contract findByAxCode(String axCode);
 
     Set<Contract> findAll(int count, int setNumber, String sortingColumn, int sortingType);
+
+    Set<Contract> findAllByNumber (String number, int count, int setNumber, String sortingColumn, int sortingType);
 
     Set<Contract> findAllByName(String name, int count, int setNumber, String sortingColumn, int sortingType);
 

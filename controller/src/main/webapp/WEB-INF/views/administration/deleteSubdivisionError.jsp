@@ -7,7 +7,6 @@
 	<title>Deleting Subdivision</title>
 	<link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
 	<link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
-	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
 
 </head>
 <body>

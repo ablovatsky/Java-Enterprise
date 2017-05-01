@@ -71,7 +71,7 @@ function fillEditWorker(worker, subdivisions, profiles) {
         let type = profile.type;
         $("#workerProfiles").append( $('<option value=' + id + '>' + type + '</option>'));
         worker.workerProfiles.forEach( function (workerProfile) {
-           if (workerProfile.localeCompare(type) === 0) {
+           if (workerProfile.type.localeCompare(type) === 0) {
                $("#workerProfiles").find("[value='"+ id +"']").attr("selected", "selected");
            }
         });
@@ -81,7 +81,7 @@ function fillEditWorker(worker, subdivisions, profiles) {
         let id = subdivision.id;
         let name = subdivision.name;
         $("#subdivision").append( $('<option value=' + id + '>' + name + '</option>'));
-        if (worker.subdivision.localeCompare(name) === 0) {
+        if (worker.subdivision.name.localeCompare(name) === 0) {
             $("#subdivision").find("[value='"+ id +"']").attr("selected", "selected");
         }
     });
@@ -153,31 +153,6 @@ function send(jsonString, jSsoId) {
         }
     });
 }
-
-function checkEmptyInput(id) {
-    const value = $("#" + id).val().replace(/^\s*/, '').replace(/\s*$/, '');
-    $("#" + id).val(value);
-    if ($.isEmptyObject(value)) {
-        $("#" + id + "Error").text("Данное поле обязательно для заполнения!");
-        return false;
-    } else {
-        $("#" + id + "Error").text("");
-        return value;
-    }
-}
-
-function checkSelect(id) {
-    let selectId = $("#" + id).val();
-    if (!selectId) {
-        $("#" + id + "Error").text("Данное поле обязательно для заполнения!");
-        return false;
-    } else {
-        $("#" + id + "Error").text("");
-        return selectId;
-    }
-
-}
-
 
 function getSubdivisions(worker) {
     $.ajax({

@@ -9,54 +9,42 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
-	<title>Список договоров</title>
+	<title>Плановая трудоемкость</title>
 	<link href="<c:url value='//static/css/bootstrap.css' />" rel="stylesheet"/>
 	<link href="<c:url value='//static/css/app.css' />" rel="stylesheet"/>
     <link href="<c:url value='//static/css/simplePagination.css' />" rel="stylesheet"/>
 
 	<script src="<c:url value='//static/js/jquery-1.11.3.js' />" ></script>
     <script src="<c:url value='//static/js/util.js' />" ></script>
-    <script src="<c:url value='//static/js/contract/contractList.js' />" ></script>
+    <script src="<c:url value='//static/js/contract/laborIntensity/laborIntensity.js' />" ></script>
     <script src="<c:url value='//static/js/pagination/jquery.simplePagination.js' />" ></script>
 </head>
 
 
 
 <body>
-<%@include file="../header.jsp" %>
+<%@include file="../../header.jsp" %>
+<input type="hidden" id="hdnSession" data-value=<%= session.getAttribute("contractNumber") %> />
 	<div class="generic-container">
-
-		<div class="well">
-			<a href='/avectis/contracts/contract/new'>Добавить новый договор</a>
-		</div>
 		<div class="panel panel-default">
 		  	<div class="panel-heading">
-                <span class="lead">Список договоров </span>
-                <select size="1" id="itemsOnPage" class="form-control input-sm" >
-                    <option>10</option>
-                    <option>50</option>
-                    <option>100</option>
-                </select>
-                <select size="1" id="l_states" class="form-control input-sm" >
-                </select>
-                <input type="text" id="l_contractNumber" class="form-control input-sm" placeholder="Номер договора" required/>
+                <span class="lead">Планавая трудоемкость договора № <%= session.getAttribute("contractNumber") %></span>
+
             </div>
-			<table class="table table-hover">
-	    	</table>
+			<table class="table table-labor-intensity table-hover"></table>
+            <table class="table table-new-labor-intensity table-hover"></table>
 		</div>
         <div id="light-pagination" class="pagination">
         </div>
    	</div>
 </body>
 <script>
-    $( '#itemsOnPage' ).change(function() {
-        changeItemsOnPage( this.value);
+
+    $('#plannedLaborIntensity').keypress(function(key) {
+        return onePointInInput(key);
     });
-    $( '#l_states' ).change(function() {
-        findByState( this.value);
-    });
-    $( '#l_contractNumber' ).on("change paste keyup", function() {
-        findByContractNumber( this.value);
+    $('#plannedCost').keypress(function(key) {
+        return onePointInInput(key);
     });
 </script>
 </html>

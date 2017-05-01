@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/administration/")
-@SessionAttributes("roles")
 public class WorkerController {
 
     @GetMapping( value = { "/workers" } )

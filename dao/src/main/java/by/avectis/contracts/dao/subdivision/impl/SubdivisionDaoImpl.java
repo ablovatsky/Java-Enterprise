@@ -51,19 +51,17 @@ public class SubdivisionDaoImpl extends AbstractDAO<Long, Subdivision> implement
     public Subdivision findByName(String name) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("name", name));
-        Subdivision subdivision = (Subdivision) criteria.uniqueResult();
-        if (subdivision != null) {
+        /* if (subdivision != null) {
             Hibernate.initialize(subdivision.getWorkerList());
-        }
-        return subdivision;
+        }*/
+        return (Subdivision) criteria.uniqueResult();
     }
 
     @Override
     public Subdivision findById(Long id) throws DaoException {
-        Subdivision subdivision = getById(id);
-        if (subdivision != null) {
+        /*if (subdivision != null) {
             Hibernate.initialize(subdivision.getWorkerList());
-        }
-        return subdivision;
+        }*/
+        return getById(id);
     }
 }

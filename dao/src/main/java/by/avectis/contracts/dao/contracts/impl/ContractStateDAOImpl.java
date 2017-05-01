@@ -7,6 +7,7 @@ import by.avectis.contracts.dao.contracts.ContractStateDAO;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.ContractState;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,17 @@ public class ContractStateDAOImpl extends AbstractDAO<Long, ContractState> imple
         logger.info("findAll : {}");
         Criteria criteria = createEntityCriteria();
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        return (List<ContractState>) criteria.list();
+        List<ContractState> contractStates = (List<ContractState>) criteria.list();
+        //contractStates.forEach(contractState -> Hibernate.initialize(contractState.getContractsList()));
+        return contractStates;
     }
 
     @Override
     public ContractState findById(long id) throws DaoException{
-        return getById(id);
+        ContractState contractState = getById(id);
+        if (contractState != null) {
+            Hibernate.initialize(contractState.getContractsList());
+        }
+        return contractState;
     }
 }

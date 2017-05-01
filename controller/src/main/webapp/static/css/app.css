@@ -28,7 +28,7 @@ body{
 .generic-container {
     position:relative;
     z-index: 1;
-    min-width: 950px;
+    min-width: 1250px;
     width:80%;
     padding: 20px;
     background-color: #f7f7f7;
@@ -97,13 +97,26 @@ body, #mainWrapper, .form-control{
     float: right;
 }
 
+
 #l_subdivision {
     width: 190px;
     float: right;
     margin-right: 10px;
 }
 
+#l_states {
+    width: 190px;
+    float: right;
+    margin-right: 10px;
+}
+
 #l_lastName {
+     width: 250px;
+     float: right;
+     margin-right: 10px;
+ }
+
+#l_contractNumber {
     width: 250px;
     float: right;
     margin-right: 10px;

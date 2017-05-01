@@ -19,15 +19,19 @@ public interface ContractService {
 
     Contract findByName(String name);
 
+    Contract findByNumber(String number);
+
     Contract findByAxCode(String axCode);
 
     Set<Contract> findAll(int count, int setNumber, String sortingColumn, int sortingType);
+
+    Set<Contract> findAllByNumber(String number, int count, int setNumber, String sortingColumn, int sortingType);
 
     Set<Contract> findAllByName(String name, int count, int setNumber, String sortingColumn, int sortingType);
 
     Set<Contract> findAllByAxCode(String axCode, int count, int setNumber, String sortingColumn, int sortingType);
 
-    Set<Contract> findAllByState(ContractState contractState, int count, int setNumber, String sortingColumn, int sortingType);
+    Set<Contract> findAllByState(int stateId, int count, int setNumber, String sortingColumn, int sortingType) throws ServiceException;
 
     long getCountRows() throws DaoException;
 
@@ -36,4 +40,6 @@ public interface ContractService {
     long getCountRowsByAxCode(String axCode);
 
     long getCountRowsByState(ContractState contractState);
+
+    boolean isContractNumberUnique(String number);
 }

@@ -100,8 +100,8 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
 	public boolean isWorkerSSOIDUnique(String ssoId) {
-        Worker user = findBySSOID(ssoId);
-        return  user == null;
+        Worker worker = findBySSOID(ssoId);
+        return  worker == null;
 	}
 
     @Override

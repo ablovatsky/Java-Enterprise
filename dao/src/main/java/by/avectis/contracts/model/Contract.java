@@ -6,6 +6,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "CONTRACTS")
@@ -47,7 +50,7 @@ public class Contract {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "state")
-    private ContractState contractsState;
+    private ContractState contractState;
 
     @Column(name = "comment_1")
     @Type(type="text")
@@ -56,6 +59,10 @@ public class Contract {
     @Column(name = "comment_2")
     @Type(type="text")
     private String commentSecond;
+
+    @Transient
+    @OneToMany(mappedBy = "contract", fetch = FetchType.LAZY)
+    private Set<LaborIntensity> laborIntensitySet = new HashSet<>();
 
 
     public Long getId() {
@@ -106,12 +113,22 @@ public class Contract {
         this.timeStart = timeStart;
     }
 
+    public void setTimeStart(String timeStart) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.timeStart = LocalDate.parse(timeStart, formatter);
+    }
+
     public LocalDate getTimeStop() {
         return timeStop;
     }
 
     public void setTimeStop(LocalDate timeStop) {
         this.timeStop = timeStop;
+    }
+
+    public void setTimeStop(String timeStop) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.timeStop = LocalDate.parse(timeStop, formatter);
     }
 
     public Float getCost() {
@@ -138,12 +155,12 @@ public class Contract {
         this.plannedProfit = planned_profit;
     }
 
-    public ContractState getContractsState() {
-        return contractsState;
+    public ContractState getContractState() {
+        return contractState;
     }
 
-    public void setContractsState(ContractState contractsState) {
-        this.contractsState = contractsState;
+    public void setContractState(ContractState contractsState) {
+        this.contractState = contractsState;
     }
 
     public String getCommentFirst() {
@@ -162,20 +179,28 @@ public class Contract {
         this.commentSecond = commentSecond;
     }
 
+    public Set<LaborIntensity> getLaborIntensitySet() {
+        return laborIntensitySet;
+    }
+
+    public void setLaborIntensitySet(Set<LaborIntensity> laborIntensitySet) {
+        this.laborIntensitySet = laborIntensitySet;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Contract contracts = (Contract) o;
+        Contract contract = (Contract) o;
 
-        if (!id.equals(contracts.id)) return false;
-        return number.equals(contracts.number);
+        if (id != null ? !id.equals(contract.id) : contract.id != null) return false;
+        return number.equals(contract.number);
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + number.hashCode();
         return result;
     }
@@ -193,7 +218,7 @@ public class Contract {
                 ", cost=" + cost +
                 ", plannedSurcharge=" + plannedSurcharge +
                 ", planned_profit=" + plannedProfit +
-                ", contractsState=" + contractsState +
+                ", contractState=" + contractState +
 
                 '}';
     }

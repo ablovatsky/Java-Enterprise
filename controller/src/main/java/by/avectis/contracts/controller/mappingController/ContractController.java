@@ -17,14 +17,14 @@ public class ContractController {
         return "/contract/contractslist";
     }
 
-    @GetMapping( value = {"/new"} )
+    @GetMapping( value = {"/contract/new"} )
     public String newWorkerPage(HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.setAttribute("contractId", "newContract");
         return "/contract/contractRegistration";
     }
 
-    @GetMapping( value = { "/{contractId}" } )
+    @GetMapping( value = { "/contract/{contractId}" } )
     public String editWorkerPage(@PathVariable Long contractId, HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.setAttribute("contractId", contractId);
