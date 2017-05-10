@@ -1,12 +1,13 @@
 package by.avectis.contracts.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "CONTRACTS_STATE")
-public class ContractState {
+public class ContractState implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

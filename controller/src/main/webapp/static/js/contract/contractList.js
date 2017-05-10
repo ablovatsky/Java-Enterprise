@@ -89,7 +89,7 @@ function fillContractList(contracts, states) {
     table += '<thead>';
     table += '<tr>';
     table += '<th>Номер</th>';
-    table += '<th>Название</th>';
+    table += '<th>Заказчик</th>';
     table += '<th>АХ код</th>';
     table += '<th>Начало</th>';
     table += '<th>Окончание</th>';

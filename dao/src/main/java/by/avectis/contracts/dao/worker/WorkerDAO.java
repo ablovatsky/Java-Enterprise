@@ -20,7 +20,9 @@ public interface WorkerDAO {
 	
 	Set<Worker> findAll(int count, int setNumber, String sortingColumn, int sortingType);
 
-	Set<Worker> findAllBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType);
+	Set<Worker> findAllBySubdivision(Subdivision subdivision);
+
+	Set<Worker> findAllBySubdivision(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType);
 
 	Set<Worker> findAllByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType);
 

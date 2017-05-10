@@ -40,4 +40,11 @@ public class ContractStateDAOImpl extends AbstractDAO<Long, ContractState> imple
         }
         return contractState;
     }
+
+    @Override
+    public ContractState findByName(String nameType) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.like("type", nameType));
+        return (ContractState) criteria.uniqueResult();
+    }
 }

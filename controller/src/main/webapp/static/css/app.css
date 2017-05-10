@@ -126,3 +126,33 @@ body, #mainWrapper, .form-control{
     margin: 10px 0px 0px 0px;
     max-width: 100%;
 }
+
+#month {
+    float: right;
+    width: 265px;
+}
+
+.vertical-text {
+    transform: rotate(-90deg);
+    margin-top: -65px !important;
+    white-space: nowrap;
+}
+.time_sheet_table {
+    table-layout: fixed;
+}
+
+.time_sheet_table th {
+    height: 200px;
+}
+
+#td_w {
+    width: 65px;
+}
+
+#td_c {
+    width: 180px;
+}
+
+.btn-primary-time-sheet, .del-time-sheet {
+    float: right;
+}

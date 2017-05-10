@@ -28,6 +28,7 @@ nav ul{
     display: inline-table;
 }
 nav ul li{
+    width: inherit;
     float: left;
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
@@ -57,7 +58,7 @@ nav ul ul{
     position: absolute;
     top: 100%;
     box-shadow: -3px 3px 10px -2px rgba(0,0,0,.1);
-    border: 1px solid rgba(0,0,0,.1);
+   /* border: 1px solid rgba(0,0,0,.1);*/
 }
 nav ul ul li{float: none; position: relative;}
 nav ul ul li a {

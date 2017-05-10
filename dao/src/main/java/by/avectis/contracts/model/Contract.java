@@ -1,18 +1,25 @@
 package by.avectis.contracts.model;
 
 import by.avectis.contracts.dao.Util.LocalDateConverter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "CONTRACTS")
-public class Contract {
+/*@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)*/
+public class Contract implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,6 +71,9 @@ public class Contract {
     @OneToMany(mappedBy = "contract", fetch = FetchType.LAZY)
     private Set<LaborIntensity> laborIntensitySet = new HashSet<>();
 
+    @Transient
+    @OneToMany(mappedBy = "contract", fetch = FetchType.LAZY)
+    private Set<Employment> employmentSet = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -185,6 +195,14 @@ public class Contract {
 
     public void setLaborIntensitySet(Set<LaborIntensity> laborIntensitySet) {
         this.laborIntensitySet = laborIntensitySet;
+    }
+
+    public Set<Employment> getEmploymentSet() {
+        return employmentSet;
+    }
+
+    public void setEmploymentSet(Set<Employment> employmentSet) {
+        this.employmentSet = employmentSet;
     }
 
     @Override

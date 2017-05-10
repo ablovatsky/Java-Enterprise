@@ -5,7 +5,7 @@ import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Subdivision;
 import java.util.Set;
 
-public interface  SubdivisionDao  {
+public interface SubdivisionDAO {
 
     void add(Subdivision subdivision) throws DaoException;
 

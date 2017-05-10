@@ -151,10 +151,10 @@ function send(jsonString, contractId) {
             if (status.status === 200) {
                 if (  contractId === undefined || contractId === null ){
                     document.location.href = "/avectis/contracts/";
-                    alert("Договор <<" + contractId + ">> добавлен успешно.");
+                    alert("Договор добавлен успешно.");
                 } else {
                     document.location.href = "/avectis/contracts/";
-                    alert("Данные договора <<" + contractId + ">> изменены.");
+                    alert("Данные договора изменены.");
                 }
             }
         },

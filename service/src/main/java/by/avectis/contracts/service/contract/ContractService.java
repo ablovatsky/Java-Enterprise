@@ -4,8 +4,10 @@ package by.avectis.contracts.service.contract;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Contract;
 import by.avectis.contracts.model.ContractState;
+import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.service.exception.ServiceException;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public interface ContractService {
@@ -42,4 +44,6 @@ public interface ContractService {
     long getCountRowsByState(ContractState contractState);
 
     boolean isContractNumberUnique(String number);
+
+    boolean isContractId(long id);
 }

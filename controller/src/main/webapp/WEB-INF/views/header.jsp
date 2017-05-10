@@ -9,11 +9,15 @@
         <ul>
             <li><a href="/avectis/main">Главная</a></li>
             <li><a href="/avectis/contracts/">Договоры</a></li>
-            <li><a href="#">Табели</a></li>
+            <li><a href="/avectis/timesheet/">Табели</a></li>
             <li><a href="#">Отчеты</a></li>
             <li><a href="#">Администрирование</a>
                 <ul>
-                    <li><a href="/avectis/administration/subdivisions">Подразделения</a></li>
+                    <li><a href="/avectis/administration/subdivisions">Подразделения</a>
+                        <ul>
+                            <li><a href="/avectis/administration/subdivisions/cost">Стоимость</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/avectis/administration/workers">Работники</a></li>
                 </ul>
             </li>

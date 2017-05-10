@@ -2,10 +2,9 @@ package by.avectis.contracts.dao.subdivision.impl;
 
 import by.avectis.contracts.dao.AbstractDAO;
 import by.avectis.contracts.dao.exception.DaoException;
-import by.avectis.contracts.dao.subdivision.SubdivisionDao;
+import by.avectis.contracts.dao.subdivision.SubdivisionDAO;
 import by.avectis.contracts.model.Subdivision;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -16,9 +15,9 @@ import java.util.List;
 import java.util.Set;
 
 @Repository("subdivisionDao")
-public class SubdivisionDaoImpl extends AbstractDAO<Long, Subdivision> implements SubdivisionDao {
+public class SubdivisionDAOImpl extends AbstractDAO<Long, Subdivision> implements SubdivisionDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(SubdivisionDaoImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SubdivisionDAOImpl.class);
 
     @Override
     public void add(Subdivision subdivision) throws DaoException {

@@ -14,10 +14,10 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/contracts/laboriousness/")
 public class LaborIntensityController {
 
-    @GetMapping( value = { "/{contractNumber}" } )
-    public String laborIntensityPage(@PathVariable String contractNumber, HttpServletRequest req) {
+    @GetMapping( value = { "/{contractId}" } )
+    public String laborIntensityPage(@PathVariable long contractId, HttpServletRequest req) {
         HttpSession session = req.getSession();
-        session.setAttribute("contractNumber", contractNumber);
+        session.setAttribute("contractId", contractId);
         return "/contract/laborIntensity/laborIntensity";
     }
 }

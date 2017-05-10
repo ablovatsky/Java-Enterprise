@@ -1,7 +1,7 @@
 package by.avectis.contracts.service.subdivision.impl;
 
 import by.avectis.contracts.dao.exception.DaoException;
-import by.avectis.contracts.dao.subdivision.SubdivisionDao;
+import by.avectis.contracts.dao.subdivision.SubdivisionDAO;
 import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.service.exception.ServiceException;
 import by.avectis.contracts.service.subdivision.SubdivisionService;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class SubdivisionServiceImpl implements SubdivisionService {
 
     @Autowired
-    private SubdivisionDao dao;
+    private SubdivisionDAO dao;
 
     @Override
     public void add(Subdivision subdivision) throws ServiceException {

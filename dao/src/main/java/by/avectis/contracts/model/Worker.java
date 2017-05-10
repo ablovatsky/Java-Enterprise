@@ -52,6 +52,10 @@ public class Worker implements Serializable{
              inverseJoinColumns = { @JoinColumn(name = "WORKER_PROFILE_ID") })
 	private Set<Profile> workerProfiles = new HashSet<>();
 
+    @Transient
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY)
+	private Set<Employment> employmentSet = new HashSet<>();
+
 	public Long getId() {
 		return id;
 	}
@@ -124,7 +128,15 @@ public class Worker implements Serializable{
 		this.workerProfiles = workerProfiles;
 	}
 
-	@Override
+    public Set<Employment> getEmploymentSet() {
+        return employmentSet;
+    }
+
+    public void setEmploymentSet(Set<Employment> employmentSet) {
+        this.employmentSet = employmentSet;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

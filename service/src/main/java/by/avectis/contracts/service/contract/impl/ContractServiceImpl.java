@@ -4,12 +4,15 @@ import by.avectis.contracts.dao.contracts.ContractDAO;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Contract;
 import by.avectis.contracts.model.ContractState;
+import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.service.contract.ContractService;
 import by.avectis.contracts.service.contract.ContractStateService;
 import by.avectis.contracts.service.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service("ContractService")
@@ -150,4 +153,11 @@ public class ContractServiceImpl implements ContractService {
         Contract contract = contractDAO.findByNumber(number);
         return contract == null;
     }
+
+    @Override
+    public boolean isContractId(long id) {
+        Contract contract = contractDAO.findById(id);
+        return contract == null;
+    }
+
 }

@@ -4,7 +4,9 @@ package by.avectis.contracts.dao.contracts;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Contract;
 import by.avectis.contracts.model.ContractState;
+import by.avectis.contracts.model.Subdivision;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 

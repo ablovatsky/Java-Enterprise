@@ -66,7 +66,16 @@ public class WorkerDAOImpl extends AbstractDAO<Long, Worker> implements WorkerDA
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Set<Worker> findAllBySubdivisionId(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType) {
+	public Set<Worker> findAllBySubdivision(Subdivision subdivision) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("subdivision", subdivision));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return new LinkedHashSet<>((List<Worker>) criteria.list());
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Set<Worker> findAllBySubdivision(Subdivision subdivision, int count, int setNumber, String sortingColumn, int sortingType) {
 		Criteria criteria = createEntityCriteria();
 		criteria = new CriteriaBuilder(criteria)
 				.addOrder(sortingColumn, sortingType)

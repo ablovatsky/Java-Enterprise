@@ -36,7 +36,7 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="name">Название</label>
+                <label class="col-md-3 control-lable" for="name">Название заказчика</label>
                 <div class="col-md-7">
                     <input type="text" id="name" class="form-control input-sm"/>
                     <div id="nameError" class="has-error"></div>
@@ -46,7 +46,7 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="denomination">Наименование</label>
+                <label class="col-md-3 control-lable" for="denomination">Наименование объекта</label>
                 <div class="col-md-7">
                     <input type="text" id="denomination" class="form-control input-sm" />
                     <div id="denominationError" class="has-error"></div>
@@ -96,7 +96,7 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="plannedSurcharge">Плановая моржа, руб</label>
+                <label class="col-md-3 control-lable" for="plannedSurcharge">Плановая моржа, у.е.</label>
                 <div class="col-md-7">
                     <input type="text" id="plannedSurcharge" class="form-control input-sm" />
                     <div id="plannedSurchargeError" class="has-error"></div>
@@ -106,7 +106,7 @@
 
         <div class="row">
             <div class="form-group col-md-12">
-                <label class="col-md-3 control-lable" for="plannedProfit">Плановая прибыль, руб</label>
+                <label class="col-md-3 control-lable" for="plannedProfit">Плановая прибыль, у.е.</label>
                 <div class="col-md-7">
                     <input type="text" pattern="\d+(\.\d{2})?" id="plannedProfit" class="form-control input-sm" />
                     <div id="plannedProfitError" class="has-error"></div>

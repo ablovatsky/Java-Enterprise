@@ -41,6 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/main").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
                 .antMatchers( "/administration/*").access("hasRole('ADMIN')")
+                .antMatchers( "/contracts/*").access("hasRole('ADMIN')")
+                .antMatchers( "/timesheet/*").access("hasRole('ADMIN')")
                 .and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/login").usernameParameter("ssoId").passwordParameter("password")
                 .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)

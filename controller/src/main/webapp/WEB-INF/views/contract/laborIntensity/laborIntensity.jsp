@@ -24,11 +24,11 @@
 
 <body>
 <%@include file="../../header.jsp" %>
-<input type="hidden" id="hdnSession" data-value=<%= session.getAttribute("contractNumber") %> />
+<input type="hidden" id="hdnSession" data-value=<%= session.getAttribute("contractId") %> />
 	<div class="generic-container">
 		<div class="panel panel-default">
 		  	<div class="panel-heading">
-                <span class="lead">Планавая трудоемкость договора № <%= session.getAttribute("contractNumber") %></span>
+                <span class="lead">Планавая трудоемкость договора № <%= session.getAttribute("contractId") %></span>
 
             </div>
 			<table class="table table-labor-intensity table-hover"></table>

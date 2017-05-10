@@ -28,6 +28,14 @@ public class Subdivision implements Serializable{
     @OneToMany(mappedBy = "subdivision")
     private Set<LaborIntensity> laborIntensitySet = new HashSet<>();
 
+    @Transient
+    @OneToMany(mappedBy = "subdivision", fetch = FetchType.LAZY)
+    private Set<TimeSheet> timeSheetSet = new HashSet<>();
+
+    @Transient
+    @OneToMany(mappedBy = "subdivision", fetch = FetchType.LAZY)
+    private Set<SubdivisionCost> subdivisionCostSet = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -48,6 +56,7 @@ public class Subdivision implements Serializable{
         return workerList;
     }
 
+
     public Set<LaborIntensity> getLaborIntensitySet() {
         return laborIntensitySet;
     }
@@ -58,6 +67,22 @@ public class Subdivision implements Serializable{
 
     public void setWorkerList(Set<Worker> workerList) {
         this.workerList = workerList;
+    }
+
+    public Set<TimeSheet> getTimeSheetSet() {
+        return timeSheetSet;
+    }
+
+    public void setTimeSheetSet(Set<TimeSheet> timeSheetSet) {
+        this.timeSheetSet = timeSheetSet;
+    }
+
+    public Set<SubdivisionCost> getSubdivisionCostSet() {
+        return subdivisionCostSet;
+    }
+
+    public void setSubdivisionCostSet(Set<SubdivisionCost> subdivisionCostSet) {
+        this.subdivisionCostSet = subdivisionCostSet;
     }
 
     @Override

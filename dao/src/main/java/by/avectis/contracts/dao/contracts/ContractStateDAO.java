@@ -12,4 +12,6 @@ public interface ContractStateDAO {
 
     ContractState findById(long id)  throws DaoException;
 
+    ContractState findByName(String nameType);
+
 }

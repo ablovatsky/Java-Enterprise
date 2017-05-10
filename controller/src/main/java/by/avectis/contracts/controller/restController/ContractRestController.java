@@ -1,12 +1,17 @@
 package by.avectis.contracts.controller.restController;
 
+import by.avectis.contracts.dao.contracts.ContractDAO;
+import by.avectis.contracts.dao.laborIntensity.LaborIntensityDAO;
 import by.avectis.contracts.dto.contract.ContractDTO;
 import by.avectis.contracts.dto.contract.modelDTO.ShortInfoContract;
 import by.avectis.contracts.model.Contract;
 import by.avectis.contracts.model.ContractState;
+import by.avectis.contracts.model.LaborIntensity;
 import by.avectis.contracts.service.contract.ContractService;
 import by.avectis.contracts.service.contract.ContractStateService;
 import by.avectis.contracts.service.exception.ServiceException;
+import by.avectis.contracts.service.laborIntensuty.LaborIntensityService;
+import by.avectis.contracts.service.subdivision.SubdivisionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +20,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -30,6 +37,9 @@ public class ContractRestController {
 
     @Autowired
     private ContractDTO contractDTO;
+
+    @Autowired
+    private SubdivisionService subdivisionService;
 
     @GetMapping("/states")
     public ResponseEntity<List<ContractState>> getStates() {
@@ -99,7 +109,7 @@ public class ContractRestController {
     @PutMapping(value = {"/contract/edit"})
     public ResponseEntity editWorker(@RequestBody Contract contract, BindingResult bindingResult){
         if (!bindingResult.hasErrors()) {
-            if (contractService.isContractNumberUnique(contract.getNumber())) {
+            if (contractService.isContractId(contract.getId())) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             try {

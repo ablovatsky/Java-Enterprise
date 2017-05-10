@@ -1,7 +1,7 @@
 package by.avectis.contracts.service.worker.impl;
 
 import by.avectis.contracts.dao.exception.DaoException;
-import by.avectis.contracts.dao.subdivision.SubdivisionDao;
+import by.avectis.contracts.dao.subdivision.SubdivisionDAO;
 import by.avectis.contracts.dao.worker.WorkerDAO;
 import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.model.Worker;
@@ -21,7 +21,7 @@ public class WorkerServiceImpl implements WorkerService {
 	private WorkerDAO workerDAO;
 
     @Autowired
-    private SubdivisionDao subdivisionDao;
+    private SubdivisionDAO subdivisionDao;
 
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -88,7 +88,7 @@ public class WorkerServiceImpl implements WorkerService {
     public Set<Worker> findAllBySubdivisionId(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) {
         Subdivision subdivision = subdivisionDao.findById(subdivisionId);
         if (subdivision != null) {
-            return workerDAO.findAllBySubdivisionId(subdivision, count, setNumber, sortingColumn, sortingType);
+            return workerDAO.findAllBySubdivision(subdivision, count, setNumber, sortingColumn, sortingType);
         }
         return null;
     }

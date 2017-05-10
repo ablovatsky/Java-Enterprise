@@ -28,4 +28,9 @@ public class SubdivisionController {
         session.setAttribute("id", id);
         return "/administration/subdivisionRegistration";
     }
+
+    @RequestMapping(value = {"/subdivisions/cost"}, method = RequestMethod.GET)
+    public String listSubdivisionsCost() {
+        return "/administration/subdivisionCost/subdivisionCost";
+    }
 }

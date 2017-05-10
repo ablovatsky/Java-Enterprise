@@ -7,6 +7,7 @@ import by.avectis.contracts.dao.contracts.ContractDAO;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.model.Contract;
 import by.avectis.contracts.model.ContractState;
+import by.avectis.contracts.model.Subdivision;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Restrictions;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;

@@ -1,10 +1,14 @@
 package by.avectis.contracts.service.laborIntensuty.laborIntensityImpl;
 
+import by.avectis.contracts.ServiceUtil;
 import by.avectis.contracts.dao.contracts.ContractDAO;
+import by.avectis.contracts.dao.contracts.ContractStateDAO;
 import by.avectis.contracts.dao.exception.DaoException;
 import by.avectis.contracts.dao.laborIntensity.LaborIntensityDAO;
-import by.avectis.contracts.dao.subdivision.SubdivisionDao;
+import by.avectis.contracts.dao.subdivision.SubdivisionDAO;
+import by.avectis.contracts.dao.worker.WorkerDAO;
 import by.avectis.contracts.model.Contract;
+import by.avectis.contracts.model.ContractState;
 import by.avectis.contracts.model.LaborIntensity;
 import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.service.exception.ServiceException;
@@ -13,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service("LaborIntensityService")
@@ -23,10 +28,16 @@ public class LaborIntensityServiceImpl implements LaborIntensityService{
     private LaborIntensityDAO laborIntensityDAO;
 
     @Autowired
+    private WorkerDAO workerDAO;
+
+    @Autowired
     private ContractDAO contractDAO;
 
     @Autowired
-    private SubdivisionDao subdivisionDao;
+    private ContractStateDAO contractStateDAO;
+
+    @Autowired
+    private SubdivisionDAO subdivisionDao;
 
     @Override
     public void add(LaborIntensity laborIntensity) throws ServiceException {
@@ -83,8 +94,8 @@ public class LaborIntensityServiceImpl implements LaborIntensityService{
     }
 
     @Override
-    public Set<LaborIntensity> findAllByContract(String contractNumber) {
-        Contract contract = contractDAO.findByNumber(contractNumber);
+    public Set<LaborIntensity> findAllByContract(long contractId) {
+        Contract contract = contractDAO.findById(contractId);
         if (contract != null) {
             return laborIntensityDAO.findAllByContract(contract);
         }
@@ -98,5 +109,23 @@ public class LaborIntensityServiceImpl implements LaborIntensityService{
             return laborIntensityDAO.findAllBySubdivision(subdivision);
         }
         return null;
+    }
+
+    @Override
+    public Set<LaborIntensity> findAllForTimeSheet() {
+        Long subdivisionID = workerDAO.findBySSOID(ServiceUtil.getPrincipal()).getSubdivision().getId();
+        Subdivision subdivision = subdivisionDao.findById(subdivisionID);
+        ContractState state = contractStateDAO.findByName("Открыт");
+        LocalDate date = LocalDate.now();
+        if (subdivision != null && state != null) {
+            return laborIntensityDAO.findAllForTimeSheet(subdivision, date, state);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isLaborIntensityUnique(LaborIntensity laborIntensity) {
+        LaborIntensity entity = laborIntensityDAO.findByContractAndSubdivision(laborIntensity.getContract(), laborIntensity.getSubdivision());
+        return entity == null;
     }
 }
