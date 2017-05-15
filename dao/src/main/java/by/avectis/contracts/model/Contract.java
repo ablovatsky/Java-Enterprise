@@ -2,7 +2,6 @@ package by.avectis.contracts.model;
 
 import by.avectis.contracts.dao.Util.LocalDateConverter;
 import org.hibernate.annotations.*;
-import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -17,10 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "CONTRACTS")
-/*@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)*/
 public class Contract implements Serializable{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -237,7 +233,6 @@ public class Contract implements Serializable{
                 ", plannedSurcharge=" + plannedSurcharge +
                 ", planned_profit=" + plannedProfit +
                 ", contractState=" + contractState +
-
                 '}';
     }
 }

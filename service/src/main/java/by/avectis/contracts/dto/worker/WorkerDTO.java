@@ -5,26 +5,27 @@ import by.avectis.contracts.model.Worker;
 import by.avectis.contracts.service.worker.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Component
-public class WorkerDTO{
+public class WorkerDTO {
 
     @Autowired
     private WorkerService workerService;
 
     private Set<ShortInfoWorker> workerSet;
 
-    /*
-    * Get WORKERs list DTO objects
-    */
+    /**
+     * Get WORKERs list DTO objects
+     */
     public Set<ShortInfoWorker> getWorkerSet(int count, int setNumber, String sortingColumn, int sortingType) {
         setWorkerSet(count, setNumber, sortingColumn, sortingType);
         return workerSet;
     }
 
-    /*
+    /**
     * Get WORKERs list DTO objects  by subdivisionId
     */
     public Set<ShortInfoWorker> getWorkerSetBySubdivision(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) {
@@ -33,7 +34,7 @@ public class WorkerDTO{
     }
 
 
-    /*
+    /**
     * Get WORKERs list DTO objects  by lastName
     */
     public Set<ShortInfoWorker> getWorkerSetByLastName(String lastName, int count, int setNumber, String sortingColumn, int sortingType) {
@@ -45,19 +46,19 @@ public class WorkerDTO{
     private void setWorkerSet(int count, int setNumber, String sortingColumn, int sortingType) {
         workerSet = new LinkedHashSet<>();
         Set<Worker> workerList = workerService.findAll(count, setNumber, sortingColumn, sortingType);
-        workerList.forEach( worker -> this.workerSet.add(new ShortInfoWorker(worker)) );
+        workerList.forEach(worker -> this.workerSet.add(new ShortInfoWorker(worker)));
     }
 
     private void setWorkerSet(long subdivisionId, int count, int setNumber, String sortingColumn, int sortingType) {
         workerSet = new LinkedHashSet<>();
         Set<Worker> workerList = workerService.findAllBySubdivisionId(subdivisionId, count, setNumber, sortingColumn, sortingType);
-        workerList.forEach( worker -> this.workerSet.add(new ShortInfoWorker(worker)) );
+        workerList.forEach(worker -> this.workerSet.add(new ShortInfoWorker(worker)));
     }
 
     private void setWorkerSet(String lastName, int count, int setNumber, String sortingColumn, int sortingType) {
         workerSet = new LinkedHashSet<>();
         Set<Worker> workerList = workerService.findAllByLastName(lastName, count, setNumber, sortingColumn, sortingType);
-        workerList.forEach( worker -> this.workerSet.add(new ShortInfoWorker(worker)) );
+        workerList.forEach(worker -> this.workerSet.add(new ShortInfoWorker(worker)));
     }
 
 }
