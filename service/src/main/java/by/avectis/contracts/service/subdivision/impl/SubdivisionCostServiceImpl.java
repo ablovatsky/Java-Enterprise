@@ -37,11 +37,16 @@ public class SubdivisionCostServiceImpl implements SubdivisionCostService {
     public void update(Set<SubdivisionCost> subdivisionCostSet) throws ServiceException {
         try {
             for (SubdivisionCost subdivisionCost : subdivisionCostSet) {
-                SubdivisionCost entity = subdivisionCostDAO.findById(subdivisionCost.getId());
-                if (entity != null) {
-                    entity.setDate(subdivisionCost.getDate());
-                    entity.setCost(subdivisionCost.getCost());
-                    entity.setSubdivision(subdivisionCost.getSubdivision());
+                Long id = subdivisionCost.getId();
+                if (id == null) {
+                    subdivisionCostDAO.add(subdivisionCost);
+                } else {
+                    SubdivisionCost entity = subdivisionCostDAO.findById(id);
+                    if (entity != null) {
+                        entity.setDate(subdivisionCost.getDate());
+                        entity.setCost(subdivisionCost.getCost());
+                        entity.setSubdivision(subdivisionCost.getSubdivision());
+                    }
                 }
             }
         }  catch (DaoException e) {

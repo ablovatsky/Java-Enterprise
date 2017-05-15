@@ -7,6 +7,7 @@ import by.avectis.contracts.model.Subdivision;
 import by.avectis.contracts.model.SubdivisionCost;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +51,8 @@ public class SubdivisionCostDAOImpl extends AbstractDAO<Long, SubdivisionCost> i
     public Set<SubdivisionCost> findAllByDate(LocalDate date) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("date", date));
+        criteria.createAlias("subdivision", "subdivision");
+        criteria.addOrder(Order.asc("subdivision.name"));
         /*subdivisionCostSet.forEach(subdivisionCost -> Hibernate.initialize(subdivisionCost.getSubdivision()));*/
         return new LinkedHashSet<>((List<SubdivisionCost>) criteria.list());
     }

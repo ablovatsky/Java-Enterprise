@@ -53,7 +53,7 @@ function fillNewTimeSheet() {
     table += '<tr>';
     table += '<th id=\'td_c\'>Договора</th>';
     workers.forEach(function (worker) {
-        table += "<th id='td_w'><p class='vertical-text'>" + worker.lastName + " " + worker.firstName + "</p></th>";
+        table += "<th id='td_w'><div id='v_div'><p class='vertical-text'>" + worker.lastName + " " + worker.firstName + "</p><div></th>";
     });
     table += '<th width="130"></th>';
     table += '</tr>';

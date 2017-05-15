@@ -23,6 +23,13 @@ public class ShortInfoSubdivisionCost implements Serializable {
         date = subdivisionCost.getDate();
     }
 
+    public ShortInfoSubdivisionCost(Long id, ShortInfoSubdivision subdivision, float cost, LocalDate date) {
+        this.id = id;
+        this.subdivision = subdivision;
+        this.cost = cost;
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }
@@ -62,14 +69,14 @@ public class ShortInfoSubdivisionCost implements Serializable {
 
         ShortInfoSubdivisionCost that = (ShortInfoSubdivisionCost) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        return subdivision != null ? subdivision.equals(that.subdivision) : that.subdivision == null;
+        if (!subdivision.equals(that.subdivision)) return false;
+        return date != null ? date.equals(that.date) : that.date == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (subdivision != null ? subdivision.hashCode() : 0);
+        int result = subdivision.hashCode();
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
 }

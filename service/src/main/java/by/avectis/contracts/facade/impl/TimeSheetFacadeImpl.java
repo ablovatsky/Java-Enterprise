@@ -52,6 +52,10 @@ public class TimeSheetFacadeImpl implements TimeSheetFacadeService{
     public TimeSheetDate getNewTimeSheetData() {
         TimeSheetDate timeSheet = new TimeSheetDate();
         LocalDate date = getDateFirstDayPreviousMonth();
+        TimeSheet entity = timeSheetDAO.findByDate(date);
+        if (entity != null) {
+            return getTimeSheetData(entity.getId());
+        }
         initializeTimeSheet(timeSheet, date);
         return timeSheet;
     }

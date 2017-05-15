@@ -132,9 +132,13 @@ body, #mainWrapper, .form-control{
     width: 265px;
 }
 
+#v_div {
+    width: 65px !important;
+    margin-bottom: 25px;
+}
 .vertical-text {
     transform: rotate(-90deg);
-    margin-top: -65px !important;
+   /* margin-top: -65px !important;*/
     white-space: nowrap;
 }
 .time_sheet_table {
